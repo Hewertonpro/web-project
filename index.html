@@ -2,279 +2,258 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DevStudy Pro</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #0f172a;
-    color: white;
-}
-
-/* HEADER */
-header {
-    text-align: center;
-    padding: 15px;
-    background: #1e293b;
-    position: sticky;
-    top: 0;
-}
-
-/* ANIMAÇÃO */
-@keyframes pop {
-    0% {transform: scale(0.9);}
-    100% {transform: scale(1);}
-}
+body {margin:0;font-family:Arial;background:#0f172a;color:white;}
+header {text-align:center;padding:15px;background:#1e293b;}
+section {display:none;padding:20px;}
+section.active {display:block;}
 
 .card {
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    animation: pop 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+background:#1e293b;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+transition:0.3s;
 }
 
-/* TELAS */
-section {
-    display: none;
-    padding: 20px;
+.locked {opacity:0.4;}
+
+button {
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+background:#38bdf8;
 }
 
-section.active {
-    display: block;
-}
+.option {display:block;width:100%;margin-top:10px;background:#334155;color:white;}
 
-/* MENU */
+progress {width:100%;}
+
 nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    background: #020617;
+position:fixed;
+bottom:0;
+width:100%;
+display:flex;
+background:#020617;
 }
 
-nav button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    background: none;
-    color: white;
-}
-
-/* BOTÕES */
-button.action {
-    margin-top: 10px;
-    padding: 10px;
-    background: #38bdf8;
-    border: none;
-    color: black;
-    border-radius: 8px;
-    transition: 0.2s;
-}
-
-button.action:hover {
-    transform: scale(1.05);
-}
-
-.option {
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-    background: #334155;
-    border: none;
-    color: white;
-    border-radius: 8px;
-}
-
-/* PROGRESSO */
-progress {
-    width: 100%;
-}
+nav button {flex:1;background:none;color:white;}
 </style>
 </head>
 
 <body>
 
 <header>
-<h2>📱 DevStudy Pro</h2>
-<p>Nível: <span id="level">1</span> | XP: <span id="xp">0</span>/<span id="xpMax">120</span></p>
-<progress id="bar" value="0" max="120"></progress>
+<h2>📚 DevStudy Pro</h2>
+<p>Nível <span id="level"></span> | XP <span id="xp"></span>/<span id="xpMax"></span></p>
+<progress id="bar"></progress>
 </header>
 
-<section id="inicio" class="active">
-<div class="card">
-<h2>🚀 Curso Python</h2>
-<p>Complete aulas e ganhe XP!</p>
-</div>
-
-<div id="aulas"></div>
-</section>
-
-<section id="quiz">
-<div class="card" id="quizBox"></div>
-</section>
-
-<section id="conquistas">
-<div class="card">
-<h2>🏆 Conquistas</h2>
-<ul id="badges"></ul>
-</div>
-</section>
+<section id="aulas" class="active"></section>
+<section id="quiz"></section>
+<section id="conquistas"></section>
 
 <nav>
-<button onclick="show('inicio')">📚</button>
+<button onclick="show('aulas')">📚</button>
 <button onclick="show('quiz')">🧠</button>
 <button onclick="show('conquistas')">🏆</button>
 </nav>
 
 <script>
-let xp = parseInt(localStorage.getItem("xp")) || 0;
-let level = parseInt(localStorage.getItem("level")) || 1;
-let xpMax = parseInt(localStorage.getItem("xpMax")) || 120;
+let xp = +localStorage.getItem("xp") || 0;
+let level = +localStorage.getItem("level") || 1;
+let xpMax = +localStorage.getItem("xpMax") || 120;
+let xpTotal = +localStorage.getItem("xpTotal") || 0;
+
 let aulasFeitas = JSON.parse(localStorage.getItem("aulas")) || [];
 let conquistas = JSON.parse(localStorage.getItem("conquistas")) || [];
 
-const somAcerto = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
-const somErro = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
-const somLevel = new Audio("https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg");
+let respondeuQuiz = false;
 
-function salvar() {
-    localStorage.setItem("xp", xp);
-    localStorage.setItem("level", level);
-    localStorage.setItem("xpMax", xpMax);
-    localStorage.setItem("aulas", JSON.stringify(aulasFeitas));
-    localStorage.setItem("conquistas", JSON.stringify(conquistas));
+function salvar(){
+localStorage.setItem("xp",xp);
+localStorage.setItem("level",level);
+localStorage.setItem("xpMax",xpMax);
+localStorage.setItem("xpTotal",xpTotal);
+localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
+localStorage.setItem("conquistas",JSON.stringify(conquistas));
 }
 
-function updateUI() {
-    document.getElementById("xp").innerText = xp;
-    document.getElementById("level").innerText = level;
-    document.getElementById("xpMax").innerText = xpMax;
-    document.getElementById("bar").max = xpMax;
-    document.getElementById("bar").value = xp;
+function updateUI(){
+xp = Math.max(0,xp);
+document.getElementById("xp").innerText = xp;
+document.getElementById("level").innerText = level;
+document.getElementById("xpMax").innerText = xpMax;
+let bar = document.getElementById("bar");
+bar.max = xpMax;
+bar.value = xp;
 }
 
-function addXP(v) {
-    xp += v;
+function addXP(v){
+xp += v;
+xpTotal += v;
 
-    if (xp >= xpMax) {
-        xp = 0;
-        level++;
-        xpMax += 120;
-        somLevel.play();
-        alert("🎉 Subiu de nível!");
-    }
-
-    if (xp < 0) xp = 0;
-
-    checkConquistas();
-    salvar();
-    updateUI();
+if(xp >= xpMax){
+xp = 0;
+level++;
+xpMax += 120;
+alert("🎉 Subiu de nível!");
 }
 
-function checkConquistas() {
-    if (!conquistas.includes("Primeira Aula") && aulasFeitas.length > 0) {
-        conquistas.push("Primeira Aula");
-    }
-    if (!conquistas.includes("50 XP") && xp >= 50) {
-        conquistas.push("50 XP");
-    }
-    if (!conquistas.includes("Nível 3") && level >= 3) {
-        conquistas.push("Nível 3");
-    }
+checkConquistas();
+salvar();
+updateUI();
+}
 
-    document.getElementById("badges").innerHTML =
-        conquistas.map(c => "<li>"+c+"</li>").join("");
+function checkConquistas(){
+if(aulasFeitas.length>=1 && !conquistas.includes("Primeira aula"))
+conquistas.push("Primeira aula");
+
+if(aulasFeitas.length>=5 && !conquistas.includes("5 aulas"))
+conquistas.push("5 aulas");
+
+if(aulasFeitas.length>=10 && !conquistas.includes("10 aulas"))
+conquistas.push("10 aulas");
+
+if(aulasFeitas.length>=15 && !conquistas.includes("Curso completo"))
+conquistas.push("Curso completo");
+
+if(xpTotal>=100 && !conquistas.includes("100 XP"))
+conquistas.push("100 XP");
+
+if(level>=3 && !conquistas.includes("Nível 3"))
+conquistas.push("Nível 3");
+
+document.getElementById("conquistas").innerHTML =
+"<div class='card'><h2>🏆 Conquistas</h2><ul>" +
+conquistas.map(c=>"<li>"+c+"</li>").join("") +
+"</ul></div>";
 }
 
 const aulas = [
-"Variáveis","Tipos","Input","Operadores","If",
-"For","While","Listas","Tuplas","Dicionários",
+"Variáveis","Tipos de dados","Entrada de dados","Operadores","Condicionais",
+"Laço for","Laço while","Listas","Tuplas","Dicionários",
 "Funções","Módulos","Erros","Classes","Arquivos"
 ];
 
-function renderAulas() {
-    let html = "";
-    aulas.forEach((aula, i) => {
-        let done = aulasFeitas.includes(i);
-        html += `
-        <div class="card">
-        <h3>${i+1}. ${aula}</h3>
-        <button class="action" ${done?"disabled":""}
-        onclick="concluir(${i}, this)">Concluir (+5 XP)</button>
-        </div>`;
-    });
-    document.getElementById("aulas").innerHTML = html;
+function renderAulas(){
+let html="";
+aulas.forEach((a,i)=>{
+let desbloqueada = i===0 || aulasFeitas.includes(i-1);
+let feita = aulasFeitas.includes(i);
+
+html+=`
+<div class="card ${!desbloqueada?"locked":""}">
+<h3>${i+1}. ${a}</h3>
+<p>${getConteudo(i)}</p>
+<button ${!desbloqueada||feita?"disabled":""}
+onclick="concluir(${i})">Concluir (+5 XP)</button>
+</div>`;
+});
+
+document.getElementById("aulas").innerHTML = html;
 }
 
-function concluir(i, btn) {
-    aulasFeitas.push(i);
-    btn.disabled = true;
-    somAcerto.play();
-    addXP(5);
-    salvar();
+function getConteudo(i){
+const conteudos = [
+"Variável guarda dados. Ex: nome='Ana'",
+"Tipos: int, str, float",
+"input() pega dados do usuário",
+"+ - * / são operadores",
+"if decide ações",
+"for repete código",
+"while repete com condição",
+"lista guarda vários valores",
+"tupla é imutável",
+"dicionário usa chave:valor",
+"função evita repetição",
+"módulos são bibliotecas",
+"try/except trata erros",
+"class cria objetos",
+"open() manipula arquivos"
+];
+return conteudos[i];
+}
+
+function concluir(i){
+if(aulasFeitas.includes(i)) return;
+aulasFeitas.push(i);
+addXP(5);
+salvar();
+renderAulas();
 }
 
 const quizzes = [
-{
-q:"O que é variável?",
-opts:["Site","Espaço que guarda dados","Celular"],
-correct:1,
-exp:"Variável guarda informações.",
-ex:"nome = 'João'"
-},
-{
-q:"O que é lista?",
-opts:["Número","Conjunto de valores","Erro"],
-correct:1,
-exp:"Lista guarda vários dados.",
-ex:"nomes = ['Ana','João']"
-},
-{
-q:"Função serve para?",
-opts:["Repetir código","Apagar dados","Nada"],
-correct:0,
-exp:"Função evita repetição.",
-ex:"def soma(): pass"
-}
+[
+{q:"Variável é?",opts:["Site","Dado","Espaço de memória"],c:2,exp:"Guarda dados",ex:"x=10"},
+{q:"Tipo string?",opts:["Texto","Número","Erro"],c:0,exp:"Texto",ex:"nome='Ana'"},
+{q:"input faz?",opts:["Sai","Entra dados","Nada"],c:1,exp:"Entrada",ex:"input()"}
+],
+[
+{q:"for faz?",opts:["Loop","Erro","Nada"],c:0,exp:"Repetição",ex:"for i in range(5)"},
+{q:"lista é?",opts:["Único","Vários","Erro"],c:1,exp:"Vários dados",ex:"[]"},
+{q:"tupla?",opts:["Mutável","Imutável","Loop"],c:1,exp:"Não muda",ex:"()"}
+],
+[
+{q:"função?",opts:["Repete código","Erro","Nada"],c:0,exp:"Reutilizar",ex:"def f()"},
+{q:"classe?",opts:["Objeto","Número","Texto"],c:0,exp:"Cria objetos",ex:"class A"},
+{q:"arquivo?",opts:["Salvar dados","Nada","Erro"],c:0,exp:"Persistência",ex:"open()"}
+]
 ];
 
-function renderQuiz() {
-    let q = quizzes[Math.floor(aulasFeitas.length/5)];
-    if (!q) return;
+function renderQuiz(){
+let bloco = Math.floor(aulasFeitas.length/5);
 
-    let html = `<h2>${q.q}</h2>`;
-    q.opts.forEach((op, i) => {
-        html += `<button class="option" onclick="responder(${i}, ${q.correct}, '${q.exp}', '${q.ex}')">${op}</button>`;
-    });
-
-    html += `<p id="res"></p>`;
-    document.getElementById("quizBox").innerHTML = html;
+if(aulasFeitas.length<5){
+document.getElementById("quiz").innerHTML="<p>Complete 5 aulas</p>";
+return;
 }
 
-function responder(i, c, exp, ex) {
-    let r = document.getElementById("res");
+if(bloco>=3) bloco=2;
 
-    if (i === c) {
-        somAcerto.play();
-        r.innerHTML = "✔ Correto!";
-        addXP(15);
-    } else {
-        somErro.play();
-        r.innerHTML = `❌ Errado<br>✔ ${exp}<br>💡 ${ex}`;
-        addXP(-3);
-    }
+let perguntas = quizzes[bloco];
+
+let html="<div class='card'><h2>Quiz</h2>";
+
+perguntas.forEach((p,idx)=>{
+html+=`<p>${p.q}</p>`;
+p.opts.forEach((op,i)=>{
+html+=`<button class="option"
+onclick="responder(${i},${p.c},'${p.exp}','${p.ex}')">${op}</button>`;
+});
+});
+
+html+="<p id='res'></p></div>";
+
+document.getElementById("quiz").innerHTML=html;
+respondeuQuiz=false;
 }
 
-function show(id) {
-    document.querySelectorAll("section")
-    .forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+function responder(i,c,exp,ex){
+if(respondeuQuiz) return;
+respondeuQuiz=true;
 
-    if (id === "quiz") renderQuiz();
+let r=document.getElementById("res");
+
+if(i===c){
+r.innerHTML="✔ Correto";
+addXP(15);
+}else{
+r.innerHTML=`❌ Errado<br>✔ ${exp}<br>💡 ${ex}`;
+addXP(-3);
+}
+}
+
+function show(id){
+document.querySelectorAll("section")
+.forEach(s=>s.classList.remove("active"));
+
+document.getElementById(id).classList.add("active");
+
+if(id==="quiz") renderQuiz();
 }
 
 renderAulas();
