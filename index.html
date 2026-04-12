@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Programação</title>
+  
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #0f172a;
+    color: white;
+}
+
+header {
+    background: #1e293b;
+    padding: 15px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    overflow-x: auto;
+    background: #020617;
+}
+
+nav button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #020617;
+    color: white;
+    cursor: pointer;
+}
+
+nav button:hover {
+    background: #334155;
+}
+
+section {
+    display: none;
+    padding: 20px;
+}
+
+.active {
+    display: block;
+}
+
+code {
+    background: black;
+    padding: 10px;
+    display: block;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: #38bdf8;
+}
+
+button.action {
+    margin-top: 15px;
+    padding: 10px;
+    background: #38bdf8;
+    border: none;
+    color: black;
+    border-radius: 5px;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>📚 Curso de Programação</h1>
+<p>Estude pelo celular 🚀</p>
+</header>
+
+<nav>
+<button onclick="show('inicio')">Início</button>
+<button onclick="show('variaveis')">Variáveis</button>
+<button onclick="show('listas')">Listas</button>
+<button onclick="show('desafios')">Desafios</button>
+</nav>
+
+<section id="inicio" class="active">
+<h2>👋 Bem-vindo</h2>
+<p>Esse é seu site de estudos de programação.</p>
+<p>Clique nas abas acima para aprender.</p>
+</section>
+
+<section id="variaveis">
+<h2>📦 Variáveis</h2>
+<p>Variáveis guardam valores.</p>
+
+<code>
+nome = "João"
+idade = 20
+</code>
+
+<button class="action" onclick="alert('Variável guarda dados!')">
+Testar
+</button>
+</section>
+
+<section id="listas">
+<h2>📋 Listas</h2>
+<p>Listas guardam vários valores.</p>
+
+<code>
+compras = ["arroz", "feijão", "leite"]
+</code>
+
+<button class="action" onclick="alert('Lista = vários valores juntos!')">
+Entendi
+</button>
+</section>
+
+<section id="desafios">
+<h2>🧠 Desafio</h2>
+<p>Crie uma lista com 3 nomes.</p>
+
+<button class="action" onclick='alert("Exemplo: nomes = [Ana, João, Carlos]")'>
+Ver resposta
+</button>
+</section>
+
+<script>
+function show(id)
+{
+    let sections = document.querySelectorAll("section");
+    sections.forEach(sec => sec.classList.remove("active"));
+
+    document.getElementById(id).classList.add("active");
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
