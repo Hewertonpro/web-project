@@ -3,22 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso de Programação</title>
-  
+<title>Curso de Programação Pro</title>
+
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #0f172a;
-    color: white;
+:root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: white;
+    --accent: #38bdf8;
 }
 
+.light {
+    --bg: #f1f5f9;
+    --card: white;
+    --text: #0f172a;
+    --accent: #2563eb;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* HEADER */
 header {
-    background: #1e293b;
+    background: var(--card);
     padding: 15px;
     text-align: center;
+    position: sticky;
+    top: 0;
 }
 
+/* NAV */
 nav {
     display: flex;
     overflow-x: auto;
@@ -27,17 +45,14 @@ nav {
 
 nav button {
     flex: 1;
-    padding: 10px;
+    padding: 12px;
     border: none;
     background: #020617;
     color: white;
     cursor: pointer;
 }
 
-nav button:hover {
-    background: #334155;
-}
-
+/* SECTIONS */
 section {
     display: none;
     padding: 20px;
@@ -47,22 +62,33 @@ section {
     display: block;
 }
 
-code {
-    background: black;
-    padding: 10px;
-    display: block;
+/* CARD STYLE */
+.card {
+    background: var(--card);
+    padding: 15px;
+    border-radius: 10px;
     margin-top: 10px;
-    border-radius: 5px;
-    color: #38bdf8;
 }
 
-button.action {
-    margin-top: 15px;
+/* CODE */
+code {
+    display: block;
+    background: black;
     padding: 10px;
-    background: #38bdf8;
-    border: none;
-    color: black;
     border-radius: 5px;
+    color: #38bdf8;
+    margin-top: 10px;
+}
+
+/* BUTTON */
+button.action {
+    margin-top: 10px;
+    padding: 10px;
+    background: var(--accent);
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
 }
 </style>
 
@@ -70,8 +96,9 @@ button.action {
 <body>
 
 <header>
-<h1>📚 Curso de Programação</h1>
-<p>Estude pelo celular 🚀</p>
+<h1>📚 Curso de Programação Pro</h1>
+<p>Agora com visual melhor e mais organizado 🚀</p>
+<button onclick="toggleTheme()" class="action">🌙 Modo</button>
 </header>
 
 <nav>
@@ -82,28 +109,32 @@ button.action {
 </nav>
 
 <section id="inicio" class="active">
+<div class="card">
 <h2>👋 Bem-vindo</h2>
-<p>Esse é seu site de estudos de programação.</p>
-<p>Clique nas abas acima para aprender.</p>
+<p>Seu site de estudos foi atualizado para versão profissional.</p>
+</div>
 </section>
 
 <section id="variaveis">
+<div class="card">
 <h2>📦 Variáveis</h2>
-<p>Variáveis guardam valores.</p>
+<p>Guardam valores na memória.</p>
 
 <code>
 nome = "João"
 idade = 20
 </code>
 
-<button class="action" onclick="alert('Variável guarda dados!')">
+<button class="action" onclick="alert('Variáveis armazenam dados!')">
 Testar
 </button>
+</div>
 </section>
 
 <section id="listas">
+<div class="card">
 <h2>📋 Listas</h2>
-<p>Listas guardam vários valores.</p>
+<p>Guardam vários valores juntos.</p>
 
 <code>
 compras = ["arroz", "feijão", "leite"]
@@ -112,30 +143,35 @@ compras = ["arroz", "feijão", "leite"]
 <button class="action" onclick="alert('Lista = vários valores juntos!')">
 Entendi
 </button>
+</div>
 </section>
 
 <section id="desafios">
+<div class="card">
 <h2>🧠 Desafio</h2>
 <p>Crie uma lista com 3 nomes.</p>
 
-<button class="action" onclick='alert("Exemplo: nomes = [Ana, João, Carlos]")'>
+<button class="action" onclick="alert('Exemplo: nomes = [\"Ana\", \"João\", \"Carlos\"]')">
 Ver resposta
 </button>
+</div>
 </section>
 
 <script>
-function show(id)
-{
-    let sections = document.querySelectorAll("section");
-    sections.forEach(sec => sec.classList.remove("active"));
+function show(id) {
+    document.querySelectorAll("section")
+    .forEach(sec => sec.classList.remove("active"));
 
     document.getElementById(id).classList.add("active");
+}
+
+function toggleTheme() {
+    document.body.classList.toggle("light");
 }
 </script>
 
 </body>
 </html>
-
 
 
 
