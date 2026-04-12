@@ -3,62 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso de Programação Pro</title>
+<title>Curso de Programação App</title>
 
 <style>
-:root {
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: white;
-    --accent: #38bdf8;
-}
-
-.light {
-    --bg: #f1f5f9;
-    --card: white;
-    --text: #0f172a;
-    --accent: #2563eb;
-}
-
 body {
     margin: 0;
     font-family: Arial;
-    background: var(--bg);
-    color: var(--text);
-}
-
-/* HEADER */
-header {
-    background: var(--card);
-    padding: 15px;
-    text-align: center;
-    position: sticky;
-    top: 0;
-}
-
-/* NAV */
-nav {
-    display: flex;
-    overflow-x: auto;
-    background: #020617;
-}
-
-nav button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    background: #020617;
+    background: #0f172a;
     color: white;
-    cursor: pointer;
 }
 
-/* SECTIONS */
+/* TELAS */
 section {
     display: none;
     padding: 20px;
+    min-height: calc(100vh - 60px);
     opacity: 0;
     transform: translateY(10px);
-    transition: 0.3s ease;
+    transition: 0.3s;
 }
 
 section.active {
@@ -67,61 +29,74 @@ section.active {
     transform: translateY(0);
 }
 
-/* CARD STYLE */
-.card {
-    background: var(--card);
+/* HEADER APP */
+header {
+    text-align: center;
     padding: 15px;
-    border-radius: 10px;
-    margin-top: 10px;
+    background: #1e293b;
+    position: sticky;
+    top: 0;
 }
 
-/* CODE */
+/* BOTÕES */
+button.action {
+    margin-top: 10px;
+    padding: 10px;
+    background: #38bdf8;
+    border: none;
+    color: black;
+    border-radius: 8px;
+}
+
+/* MENU INFERIOR (APP) */
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: #020617;
+    border-top: 1px solid #334155;
+}
+
+nav button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 14px;
+}
+
+nav button:hover {
+    background: #1e293b;
+}
+
+/* CODE BOX */
 code {
     display: block;
     background: black;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 8px;
     color: #38bdf8;
     margin-top: 10px;
 }
-
-/* BUTTON */
-button.action {
-    margin-top: 10px;
-    padding: 10px;
-    background: var(--accent);
-    border: none;
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-}
 </style>
-
 </head>
+
 <body>
 
 <header>
-<h1>📚 Curso de Programação Pro</h1>
-<p>Agora com visual melhor e mais organizado 🚀</p>
-<button onclick="toggleTheme()" class="action">🌙 Modo</button>
+<h2>📱 Curso App</h2>
 </header>
 
-<nav>
-<button onclick="show('inicio')">Início</button>
-<button onclick="show('variaveis')">Variáveis</button>
-<button onclick="show('listas')">Listas</button>
-<button onclick="show('desafios')">Desafios</button>
-</nav>
-
+<!-- TELAS -->
 <section id="inicio" class="active">
-<div class="card">
-<h2>👋 Bem-vindo</h2>
-<p>Seu site de estudos foi atualizado para versão profissional.</p>
-</div>
+<h2>🏠 Início</h2>
+<p>Bem-vindo ao seu app de estudos 🚀</p>
 </section>
 
 <section id="variaveis">
-<div class="card">
 <h2>📦 Variáveis</h2>
 <p>Guardam valores na memória.</p>
 
@@ -130,14 +105,12 @@ nome = "João"
 idade = 20
 </code>
 
-<button class="action" onclick="alert('Variáveis armazenam dados!')">
+<button class="action" onclick="alert('Variáveis guardam dados!')">
 Testar
 </button>
-</div>
 </section>
 
 <section id="listas">
-<div class="card">
 <h2>📋 Listas</h2>
 <p>Guardam vários valores juntos.</p>
 
@@ -145,44 +118,39 @@ Testar
 compras = ["arroz", "feijão", "leite"]
 </code>
 
-<button class="action" onclick="alert('Lista = vários valores juntos!')">
+<button class="action" onclick="alert('Lista = vários valores!')">
 Entendi
 </button>
-</div>
 </section>
 
 <section id="desafios">
-<div class="card">
 <h2>🧠 Desafio</h2>
 <p>Crie uma lista com 3 nomes.</p>
 
 <button class="action" onclick="alert('Exemplo: nomes = [Ana, João, Carlos]')">
 Ver resposta
 </button>
-</button>
-</div>
 </section>
+
+<!-- MENU INFERIOR -->
+<nav>
+<button onclick="show('inicio')">🏠</button>
+<button onclick="show('variaveis')">📦</button>
+<button onclick="show('listas')">📋</button>
+<button onclick="show('desafios')">🧠</button>
+</nav>
 
 <script>
 function show(id) {
-    let sections = document.querySelectorAll("section");
+    document.querySelectorAll("section")
+    .forEach(sec => sec.classList.remove("active"));
 
-    sections.forEach(sec => {
-        sec.classList.remove("active");
-    });
-
-    let target = document.getElementById(id);
-    target.classList.add("active");
-}
-
-function toggleTheme() {
-    document.body.classList.toggle("light");
+    document.getElementById(id).classList.add("active");
 }
 </script>
 
 </body>
 </html>
-
 
 
 
