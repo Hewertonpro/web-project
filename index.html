@@ -22,11 +22,25 @@ header {
     top: 0;
 }
 
+/* ANIMAÇÃO */
+@keyframes pop {
+    0% {transform: scale(0.9);}
+    100% {transform: scale(1);}
+}
+
+.card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    animation: pop 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
 /* TELAS */
 section {
     display: none;
     padding: 20px;
-    min-height: calc(100vh - 120px);
 }
 
 section.active {
@@ -37,8 +51,7 @@ section.active {
 nav {
     position: fixed;
     bottom: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
     display: flex;
     background: #020617;
 }
@@ -51,14 +64,6 @@ nav button {
     color: white;
 }
 
-/* CARDS */
-.card {
-    background: #1e293b;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-
 /* BOTÕES */
 button.action {
     margin-top: 10px;
@@ -67,9 +72,13 @@ button.action {
     border: none;
     color: black;
     border-radius: 8px;
+    transition: 0.2s;
 }
 
-/* QUIZ */
+button.action:hover {
+    transform: scale(1.05);
+}
+
 .option {
     display: block;
     margin-top: 10px;
@@ -91,105 +100,186 @@ progress {
 
 <header>
 <h2>📱 DevStudy Pro</h2>
-<p>XP: <span id="xp">0</span></p>
-<progress id="bar" value="0" max="100"></progress>
+<p>Nível: <span id="level">1</span> | XP: <span id="xp">0</span>/<span id="xpMax">120</span></p>
+<progress id="bar" value="0" max="120"></progress>
 </header>
 
-<!-- INICIO -->
 <section id="inicio" class="active">
 <div class="card">
-<h2>🏠 Bem-vindo</h2>
-<p>Seu app profissional de estudos 🚀</p>
+<h2>🚀 Curso Python</h2>
+<p>Complete aulas e ganhe XP!</p>
 </div>
+
+<div id="aulas"></div>
 </section>
 
-<!-- VARIAVEIS -->
-<section id="variaveis">
-<div class="card">
-<h2>📦 Variáveis</h2>
-<p>Guardam valores na memória.</p>
-
-<code>
-nome = "João"
-idade = 20
-</code>
-
-<button class="action" onclick="addXP(10)">
-Marcar como concluído (+10 XP)
-</button>
-</div>
-</section>
-
-<!-- LISTAS -->
-<section id="listas">
-<div class="card">
-<h2>📋 Listas</h2>
-<p>Guardam vários valores juntos.</p>
-
-<code>
-nomes = ["Ana", "João", "Carlos"]
-</code>
-
-<button class="action" onclick="addXP(10)">
-Marcar como concluído (+10 XP)
-</button>
-</div>
-</section>
-
-<!-- QUIZ -->
 <section id="quiz">
+<div class="card" id="quizBox"></div>
+</section>
+
+<section id="conquistas">
 <div class="card">
-<h2>🧠 Quiz</h2>
-<p>O que é uma variável?</p>
-
-<button class="option" onclick="responder(false)">Um site</button>
-<button class="option" onclick="responder(true)">Um espaço que guarda dados</button>
-<button class="option" onclick="responder(false)">Um celular</button>
-
-<p id="result"></p>
+<h2>🏆 Conquistas</h2>
+<ul id="badges"></ul>
 </div>
 </section>
 
-<!-- MENU -->
 <nav>
-<button onclick="show('inicio')">🏠</button>
-<button onclick="show('variaveis')">📦</button>
-<button onclick="show('listas')">📋</button>
+<button onclick="show('inicio')">📚</button>
 <button onclick="show('quiz')">🧠</button>
+<button onclick="show('conquistas')">🏆</button>
 </nav>
 
 <script>
-let xp = localStorage.getItem("xp") || 0;
+let xp = parseInt(localStorage.getItem("xp")) || 0;
+let level = parseInt(localStorage.getItem("level")) || 1;
+let xpMax = parseInt(localStorage.getItem("xpMax")) || 120;
+let aulasFeitas = JSON.parse(localStorage.getItem("aulas")) || [];
+let conquistas = JSON.parse(localStorage.getItem("conquistas")) || [];
+
+const somAcerto = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+const somErro = new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg");
+const somLevel = new Audio("https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg");
+
+function salvar() {
+    localStorage.setItem("xp", xp);
+    localStorage.setItem("level", level);
+    localStorage.setItem("xpMax", xpMax);
+    localStorage.setItem("aulas", JSON.stringify(aulasFeitas));
+    localStorage.setItem("conquistas", JSON.stringify(conquistas));
+}
 
 function updateUI() {
     document.getElementById("xp").innerText = xp;
+    document.getElementById("level").innerText = level;
+    document.getElementById("xpMax").innerText = xpMax;
+    document.getElementById("bar").max = xpMax;
     document.getElementById("bar").value = xp;
 }
 
-function addXP(value) {
-    xp = parseInt(xp) + value;
-    localStorage.setItem("xp", xp);
+function addXP(v) {
+    xp += v;
+
+    if (xp >= xpMax) {
+        xp = 0;
+        level++;
+        xpMax += 120;
+        somLevel.play();
+        alert("🎉 Subiu de nível!");
+    }
+
+    if (xp < 0) xp = 0;
+
+    checkConquistas();
+    salvar();
     updateUI();
-    alert("Você ganhou " + value + " XP 🚀");
 }
 
-function responder(correto) {
-    if (correto) {
-        document.getElementById("result").innerText = "✔ Correto!";
-        addXP(20);
+function checkConquistas() {
+    if (!conquistas.includes("Primeira Aula") && aulasFeitas.length > 0) {
+        conquistas.push("Primeira Aula");
+    }
+    if (!conquistas.includes("50 XP") && xp >= 50) {
+        conquistas.push("50 XP");
+    }
+    if (!conquistas.includes("Nível 3") && level >= 3) {
+        conquistas.push("Nível 3");
+    }
+
+    document.getElementById("badges").innerHTML =
+        conquistas.map(c => "<li>"+c+"</li>").join("");
+}
+
+const aulas = [
+"Variáveis","Tipos","Input","Operadores","If",
+"For","While","Listas","Tuplas","Dicionários",
+"Funções","Módulos","Erros","Classes","Arquivos"
+];
+
+function renderAulas() {
+    let html = "";
+    aulas.forEach((aula, i) => {
+        let done = aulasFeitas.includes(i);
+        html += `
+        <div class="card">
+        <h3>${i+1}. ${aula}</h3>
+        <button class="action" ${done?"disabled":""}
+        onclick="concluir(${i}, this)">Concluir (+5 XP)</button>
+        </div>`;
+    });
+    document.getElementById("aulas").innerHTML = html;
+}
+
+function concluir(i, btn) {
+    aulasFeitas.push(i);
+    btn.disabled = true;
+    somAcerto.play();
+    addXP(5);
+    salvar();
+}
+
+const quizzes = [
+{
+q:"O que é variável?",
+opts:["Site","Espaço que guarda dados","Celular"],
+correct:1,
+exp:"Variável guarda informações.",
+ex:"nome = 'João'"
+},
+{
+q:"O que é lista?",
+opts:["Número","Conjunto de valores","Erro"],
+correct:1,
+exp:"Lista guarda vários dados.",
+ex:"nomes = ['Ana','João']"
+},
+{
+q:"Função serve para?",
+opts:["Repetir código","Apagar dados","Nada"],
+correct:0,
+exp:"Função evita repetição.",
+ex:"def soma(): pass"
+}
+];
+
+function renderQuiz() {
+    let q = quizzes[Math.floor(aulasFeitas.length/5)];
+    if (!q) return;
+
+    let html = `<h2>${q.q}</h2>`;
+    q.opts.forEach((op, i) => {
+        html += `<button class="option" onclick="responder(${i}, ${q.correct}, '${q.exp}', '${q.ex}')">${op}</button>`;
+    });
+
+    html += `<p id="res"></p>`;
+    document.getElementById("quizBox").innerHTML = html;
+}
+
+function responder(i, c, exp, ex) {
+    let r = document.getElementById("res");
+
+    if (i === c) {
+        somAcerto.play();
+        r.innerHTML = "✔ Correto!";
+        addXP(15);
     } else {
-        document.getElementById("result").innerText = "❌ Tente novamente";
+        somErro.play();
+        r.innerHTML = `❌ Errado<br>✔ ${exp}<br>💡 ${ex}`;
+        addXP(-3);
     }
 }
 
 function show(id) {
     document.querySelectorAll("section")
-    .forEach(sec => sec.classList.remove("active"));
-
+    .forEach(s => s.classList.remove("active"));
     document.getElementById(id).classList.add("active");
+
+    if (id === "quiz") renderQuiz();
 }
 
+renderAulas();
 updateUI();
+checkConquistas();
 </script>
 
 </body>
