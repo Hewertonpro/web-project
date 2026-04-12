@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso de Programação App</title>
+<title>DevStudy Pro</title>
 
 <style>
 body {
@@ -13,29 +13,50 @@ body {
     color: white;
 }
 
-/* TELAS */
-section {
-    display: none;
-    padding: 20px;
-    min-height: calc(100vh - 60px);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: 0.3s;
-}
-
-section.active {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* HEADER APP */
+/* HEADER */
 header {
     text-align: center;
     padding: 15px;
     background: #1e293b;
     position: sticky;
     top: 0;
+}
+
+/* TELAS */
+section {
+    display: none;
+    padding: 20px;
+    min-height: calc(100vh - 120px);
+}
+
+section.active {
+    display: block;
+}
+
+/* MENU */
+nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: #020617;
+}
+
+nav button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    color: white;
+}
+
+/* CARDS */
+.card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 
 /* BOTÕES */
@@ -48,38 +69,20 @@ button.action {
     border-radius: 8px;
 }
 
-/* MENU INFERIOR (APP) */
-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    background: #020617;
-    border-top: 1px solid #334155;
-}
-
-nav button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    background: none;
-    color: white;
-    font-size: 14px;
-}
-
-nav button:hover {
-    background: #1e293b;
-}
-
-/* CODE BOX */
-code {
+/* QUIZ */
+.option {
     display: block;
-    background: black;
-    padding: 10px;
-    border-radius: 8px;
-    color: #38bdf8;
     margin-top: 10px;
+    padding: 10px;
+    background: #334155;
+    border: none;
+    color: white;
+    border-radius: 8px;
+}
+
+/* PROGRESSO */
+progress {
+    width: 100%;
 }
 </style>
 </head>
@@ -87,16 +90,22 @@ code {
 <body>
 
 <header>
-<h2>📱 Curso App</h2>
+<h2>📱 DevStudy Pro</h2>
+<p>XP: <span id="xp">0</span></p>
+<progress id="bar" value="0" max="100"></progress>
 </header>
 
-<!-- TELAS -->
+<!-- INICIO -->
 <section id="inicio" class="active">
-<h2>🏠 Início</h2>
-<p>Bem-vindo ao seu app de estudos 🚀</p>
+<div class="card">
+<h2>🏠 Bem-vindo</h2>
+<p>Seu app profissional de estudos 🚀</p>
+</div>
 </section>
 
+<!-- VARIAVEIS -->
 <section id="variaveis">
+<div class="card">
 <h2>📦 Variáveis</h2>
 <p>Guardam valores na memória.</p>
 
@@ -105,48 +114,82 @@ nome = "João"
 idade = 20
 </code>
 
-<button class="action" onclick="alert('Variáveis guardam dados!')">
-Testar
+<button class="action" onclick="addXP(10)">
+Marcar como concluído (+10 XP)
 </button>
+</div>
 </section>
 
+<!-- LISTAS -->
 <section id="listas">
+<div class="card">
 <h2>📋 Listas</h2>
 <p>Guardam vários valores juntos.</p>
 
 <code>
-compras = ["arroz", "feijão", "leite"]
+nomes = ["Ana", "João", "Carlos"]
 </code>
 
-<button class="action" onclick="alert('Lista = vários valores!')">
-Entendi
+<button class="action" onclick="addXP(10)">
+Marcar como concluído (+10 XP)
 </button>
+</div>
 </section>
 
-<section id="desafios">
-<h2>🧠 Desafio</h2>
-<p>Crie uma lista com 3 nomes.</p>
+<!-- QUIZ -->
+<section id="quiz">
+<div class="card">
+<h2>🧠 Quiz</h2>
+<p>O que é uma variável?</p>
 
-<button class="action" onclick="alert('Exemplo: nomes = [Ana, João, Carlos]')">
-Ver resposta
-</button>
+<button class="option" onclick="responder(false)">Um site</button>
+<button class="option" onclick="responder(true)">Um espaço que guarda dados</button>
+<button class="option" onclick="responder(false)">Um celular</button>
+
+<p id="result"></p>
+</div>
 </section>
 
-<!-- MENU INFERIOR -->
+<!-- MENU -->
 <nav>
 <button onclick="show('inicio')">🏠</button>
 <button onclick="show('variaveis')">📦</button>
 <button onclick="show('listas')">📋</button>
-<button onclick="show('desafios')">🧠</button>
+<button onclick="show('quiz')">🧠</button>
 </nav>
 
 <script>
+let xp = localStorage.getItem("xp") || 0;
+
+function updateUI() {
+    document.getElementById("xp").innerText = xp;
+    document.getElementById("bar").value = xp;
+}
+
+function addXP(value) {
+    xp = parseInt(xp) + value;
+    localStorage.setItem("xp", xp);
+    updateUI();
+    alert("Você ganhou " + value + " XP 🚀");
+}
+
+function responder(correto) {
+    if (correto) {
+        document.getElementById("result").innerText = "✔ Correto!";
+        addXP(20);
+    } else {
+        document.getElementById("result").innerText = "❌ Tente novamente";
+    }
+}
+
 function show(id) {
     document.querySelectorAll("section")
     .forEach(sec => sec.classList.remove("active"));
 
     document.getElementById(id).classList.add("active");
 }
+
+updateUI();
 </script>
 
 </body>
