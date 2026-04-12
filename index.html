@@ -56,10 +56,15 @@ nav button {
 section {
     display: none;
     padding: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.3s ease;
 }
 
-.active {
+section.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* CARD STYLE */
@@ -160,10 +165,14 @@ Ver resposta
 
 <script>
 function show(id) {
-    document.querySelectorAll("section")
-    .forEach(sec => sec.classList.remove("active"));
+    let sections = document.querySelectorAll("section");
 
-    document.getElementById(id).classList.add("active");
+    sections.forEach(sec => {
+        sec.classList.remove("active");
+    });
+
+    let target = document.getElementById(id);
+    target.classList.add("active");
 }
 
 function toggleTheme() {
