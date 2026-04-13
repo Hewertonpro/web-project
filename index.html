@@ -6,14 +6,14 @@
 
 <style>
 body {margin:0;font-family:'Segoe UI';background:#0b1220;color:#e2e8f0;display:flex;}
-#sidebar {width:260px;background:#020617;height:100vh;padding:15px;}
+#sidebar {width:260px;background:#020617;height:100vh;padding:15px;overflow:auto;}
 .aulaBtn {width:100%;margin-bottom:10px;padding:12px;background:#1e293b;border:none;color:#cbd5f5;border-radius:8px;cursor:pointer;}
 .locked {opacity:0.3;}
-#main {flex:1;padding:25px;}
+#main {flex:1;padding:25px;overflow:auto;height:100vh;}
 header {background:#1e293b;padding:15px;border-radius:10px;margin-bottom:20px;}
 .card {background:#1e293b;padding:25px;border-radius:12px;line-height:1.8;}
 h2{color:#38bdf8;} h3{color:#7dd3fc;}
-pre{background:#020617;padding:15px;border-radius:10px;color:#38bdf8;}
+pre{background:#020617;padding:15px;border-radius:10px;color:#38bdf8;overflow:auto;}
 textarea{width:100%;height:120px;background:#020617;color:white;border:1px solid #334155;border-radius:8px;padding:10px;}
 button{margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
 progress{width:100%;}
@@ -59,14 +59,11 @@ bar.value=xp;
 function addXP(v){
 xp+=v;
 if(xp>=xpMax){
-xp=0;
-level++;
-xpMax+=120;
+xp=0;level++;xpMax+=120;
 alert("🎉 Subiu de nível!");
 }
 if(xp<0)xp=0;
-salvar();
-updateUI();
+salvar();updateUI();
 }
 
 const aulas=["Variáveis","Tipos","Input","Operadores","Condicionais","For"];
@@ -82,19 +79,13 @@ sidebar.innerHTML=html;
 
 function abrir(i){
 conteudo.innerHTML=conteudos[i];
-
 let btn=document.getElementById("btnConcluir");
 
 if(aulasFeitas.includes(i)){
-btn.disabled=true;
-btn.innerText="✔ Concluída";
+btn.disabled=true;btn.innerText="✔ Concluída";
 }else{
 btn.innerText="Concluir aula (+5 XP)";
-btn.onclick=()=>{
-concluir(i);
-btn.disabled=true;
-btn.innerText="✔ Concluída";
-}
+btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Concluída";}
 }
 }
 
@@ -114,34 +105,92 @@ if(txt.includes("=")){
 r.innerHTML="✔ Boa resposta!";
 addXP(10);
 }else{
-r.innerHTML="❌ Errado.<br><b>Exemplo:</b><pre>preco = 50\ndesconto = 10</pre>";
+r.innerHTML="❌ Errado.<br><b>Exemplo:</b><pre>preco = 50\ndesconto = 10\ntotal = preco - desconto</pre>";
 addXP(-3);
 }
 }
 
 const conteudos=[
 
-/* ================= AULA 1 ================= */
+/* ================= AULA 1 GIGANTE ================= */
 `<div class="card">
-<h2>📦 Variáveis (Completo)</h2>
+<h2>📦 Variáveis (Guia Completo Profissional)</h2>
 
-<h3>O que são?</h3>
-<p>Variáveis armazenam dados na memória.</p>
+<h3>📖 Conceito Profundo</h3>
+<p>Variáveis são a base de toda programação. Elas permitem armazenar dados temporários na memória do computador durante a execução de um programa.</p>
+
+<p>Sem variáveis, não seria possível criar lógica, cálculos, sistemas ou qualquer tipo de automação.</p>
+
+<p>Pense em uma variável como um "container inteligente" que guarda valores que podem ser usados e modificados ao longo do tempo.</p>
+
+<h3>🧠 Memória e funcionamento interno</h3>
+<p>Quando você escreve:</p>
 
 <pre>nome = "Carlos"</pre>
 
-<h3>Exemplo real</h3>
+<p>O Python cria uma referência na memória RAM, associando o identificador "nome" ao valor "Carlos".</p>
+
+<p>Isso significa que o valor pode ser reutilizado, alterado e manipulado.</p>
+
+<h3>💡 Exemplos progressivos</h3>
+
 <pre>
-preco = 100
-desconto = 20
-total = preco - desconto
+idade = 20
+print(idade)
 </pre>
 
-<h3>Erros comuns</h3>
-<pre>nome = Carlos</pre>
+<pre>
+a = 10
+b = 5
+soma = a + b
+print(soma)
+</pre>
 
-<h3>Exercício</h3>
-<p>Crie preco e desconto</p>
+<pre>
+produto = "Celular"
+preco = 1500
+quantidade = 2
+total = preco * quantidade
+print(total)
+</pre>
+
+<h3>🌍 Aplicação real</h3>
+<p>Imagine um sistema de loja:</p>
+
+<pre>
+cliente = "João"
+saldo = 500
+compra = 200
+saldo_final = saldo - compra
+</pre>
+
+<p>Isso é exatamente como sistemas reais funcionam.</p>
+
+<h3>⚠️ Erros comuns detalhados</h3>
+
+<pre>nome = Carlos</pre>
+<p>Erro: falta aspas</p>
+
+<pre>x = "10" + 5</pre>
+<p>Erro: mistura de tipos</p>
+
+<pre>1nome = "Ana"</pre>
+<p>Erro: variável inválida</p>
+
+<h3>🧠 Boas práticas profissionais</h3>
+<ul>
+<li>Use nomes descritivos</li>
+<li>Evite abreviações confusas</li>
+<li>Mantenha padrão</li>
+</ul>
+
+<h3>🧠 Exercício nível real</h3>
+<p>Crie um sistema de compra:</p>
+<ul>
+<li>preco = 80</li>
+<li>desconto = 10</li>
+<li>total = preco - desconto</li>
+</ul>
 
 <textarea id="a1"></textarea>
 <button onclick="corrigir('a1','r1')">Verificar</button>
@@ -150,25 +199,58 @@ total = preco - desconto
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 2 ================= */
+/* ================= AULA 2 GIGANTE ================= */
 `<div class="card">
-<h2>🔢 Tipos de Dados</h2>
+<h2>🔢 Tipos de Dados (Guia Completo)</h2>
 
-<h3>Tipos principais</h3>
+<h3>📖 Conceito</h3>
+<p>Tipos de dados definem como os valores são interpretados pelo sistema.</p>
+
+<p>Sem entender tipos, você não consegue manipular dados corretamente.</p>
+
+<h3>🧠 Tipos principais</h3>
 <ul>
-<li>int</li>
-<li>float</li>
-<li>str</li>
-<li>bool</li>
+<li>int → números inteiros</li>
+<li>float → decimais</li>
+<li>str → texto</li>
+<li>bool → verdadeiro ou falso</li>
 </ul>
+
+<h3>💡 Exemplos completos</h3>
+
+<pre>
+idade = 25
+preco = 19.90
+nome = "Carlos"
+ativo = True
+</pre>
+
+<h3>🧠 Tipagem dinâmica</h3>
+<p>Python identifica automaticamente o tipo.</p>
 
 <pre>
 x = 10
-nome = "Ana"
+x = "texto"
 </pre>
 
-<h3>Exercício</h3>
-<p>Crie um número e um texto</p>
+<h3>⚠️ Erros comuns</h3>
+
+<pre>"10" + 5</pre>
+<p>Erro de tipo</p>
+
+<pre>idade = "18"</pre>
+<p>Agora virou string</p>
+
+<h3>🧠 Conversão</h3>
+
+<pre>
+int("10")
+float("5.5")
+str(20)
+</pre>
+
+<h3>🧠 Exercício</h3>
+<p>Crie um inteiro, um texto e um decimal</p>
 
 <textarea id="a2"></textarea>
 <button onclick="corrigir('a2','r2')">Verificar</button>
