@@ -1,238 +1,154 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>DevStudy Pro</title>
-
-<style>
-body {margin:0;font-family:Arial;background:#0f172a;color:white;display:flex;}
-#sidebar {width:260px;background:#020617;height:100vh;overflow:auto;padding:10px;}
-.aulaBtn {display:block;width:100%;margin-bottom:8px;padding:10px;background:#1e293b;border:none;color:white;text-align:left;cursor:pointer;}
-.locked {opacity:0.4;}
-#main {flex:1;padding:20px;overflow:auto;height:100vh;}
-header {background:#1e293b;padding:10px;margin-bottom:15px;}
-.card {background:#1e293b;padding:20px;border-radius:10px;margin-bottom:20px;line-height:1.7;}
-pre {background:#020617;padding:10px;border-radius:8px;}
-textarea {width:100%;height:100px;background:#020617;color:white;border:none;padding:10px;}
-button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
-h3 {margin-top:20px;}
-</style>
-</head>
-
-<body>
-
-<div id="sidebar"></div>
-
-<div id="main">
-<header>
-<h2>DevStudy Pro</h2>
-<p>Nível <span id="level"></span> | XP <span id="xp"></span>/<span id="xpMax"></span></p>
-<progress id="bar"></progress>
-</header>
-
-<div id="conteudo"></div>
-</div>
-
-<script>
-let xp = +localStorage.getItem("xp")||0;
-let level = +localStorage.getItem("level")||1;
-let xpMax = +localStorage.getItem("xpMax")||120;
-let aulasFeitas = JSON.parse(localStorage.getItem("aulas"))||[];
-
-function salvar(){
-localStorage.setItem("xp",xp);
-localStorage.setItem("level",level);
-localStorage.setItem("xpMax",xpMax);
-localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
-}
-
-function updateUI(){
-document.getElementById("xp").innerText = xp;
-document.getElementById("level").innerText = level;
-document.getElementById("xpMax").innerText = xpMax;
-bar.max = xpMax;
-bar.value = xp;
-}
-
-function addXP(v){
-xp += v;
-if(xp >= xpMax){
-xp = 0;
-level++;
-xpMax += 120;
-alert("🎉 Subiu de nível!");
-}
-if(xp < 0) xp = 0;
-salvar();
-updateUI();
-}
-
-const aulas = [
-"Variáveis","Tipos","Input","Operadores","Condicionais",
-"For","While","Listas","Tuplas","Dicionários",
-"Funções","Módulos","Erros","Classes","Arquivos"
-];
-
-function renderSidebar(){
-let html="";
-aulas.forEach((a,i)=>{
-let desbloqueada=i===0||aulasFeitas.includes(i-1);
-html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}" ${!desbloqueada?"disabled":""} onclick="abrir(${i})">${i+1}. ${a}</button>`;
-});
-sidebar.innerHTML=html;
-}
-
-function abrir(i){
-conteudo.innerHTML=conteudos[i];
-
-let btn=document.getElementById("btnConcluir");
-
-if(aulasFeitas.includes(i)){
-btn.disabled=true;
-btn.innerText="✔ Aula concluída";
-}else{
-btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Aula concluída";}
-}
-}
-
-function concluir(i){
-if(aulasFeitas.includes(i))return;
-aulasFeitas.push(i);
-addXP(5);
-salvar();
-renderSidebar();
-}
-
-function corrigir(id,res){
-let txt=document.getElementById(id).value;
-let r=document.getElementById(res);
-
-if(txt.length>5){
-r.innerHTML="✔ Boa resposta!";
-addXP(10);
-}else{
-r.innerHTML="❌ Desenvolva mais a resposta";
-addXP(-3);
-}
-}
-
 const conteudos = [
 
-/* ================= AULA 1 GIGANTE ================= */
+/* ================= AULA 1 ================= */
+conteudos[0],
+
+/* ================= AULA 2 ================= */
+conteudos[1],
+
+/* ================= AULA 3 ================= */
+conteudos[2],
+
+/* ================= AULA 4 ================= */
 `<div class="card">
-<h2>📦 Variáveis (Aula Completa Profissional)</h2>
+<h2>➕ Operadores</h2>
 
 <h3>📖 Introdução</h3>
-<p>Variáveis são estruturas fundamentais da programação. Elas permitem armazenar valores temporariamente na memória para serem utilizados durante a execução do programa.</p>
+<p>Operadores são usados para realizar cálculos e comparações dentro do programa.</p>
 
-<h3>🧠 Conceito profundo</h3>
-<p>Quando você cria uma variável, o Python aloca um espaço na memória RAM e associa aquele nome ao valor armazenado.</p>
-
-<h3>💡 Exemplo básico</h3>
-<pre>nome = "João"
-print(nome)</pre>
-
-<h3>💡 Exemplo matemático</h3>
-<pre>x = 10
-y = 5
-print(x + y)</pre>
-
-<h3>💡 Exemplo real</h3>
-<pre>preco = 100
-desconto = 20
-total = preco - desconto
-print(total)</pre>
-
-<h3>⚠️ Erros comuns</h3>
-<pre>nome = João</pre>
-<p>Erro: falta de aspas</p>
-
-<h3>🧠 Exercício</h3>
-<p>Crie uma variável idade com valor 25</p>
-<textarea id="e1"></textarea>
-<button onclick="corrigir('e1','r1')">Verificar</button>
-<p id="r1"></p>
-
-<h3>📚 Resumo</h3>
-<p>Variáveis são essenciais para armazenar e manipular dados.</p>
-
-<button id="btnConcluir"></button>
-</div>`,
-
-/* ================= AULA 2 GIGANTE ================= */
-`<div class="card">
-<h2>🔢 Tipos de Dados</h2>
-
-<h3>📖 Introdução</h3>
-<p>Todo valor em Python possui um tipo específico.</p>
-
-<h3>🧠 Tipos principais</h3>
+<h3>🧠 Tipos de operadores</h3>
 <ul>
-<li>int</li>
-<li>float</li>
-<li>str</li>
-<li>bool</li>
+<li>Aritméticos (+, -, *, /)</li>
+<li>Comparação (==, !=, >, <)</li>
+<li>Lógicos (and, or, not)</li>
 </ul>
 
-<h3>💡 Exemplos</h3>
-<pre>x = 10
-nome = "Ana"
-preco = 9.99
-ativo = True</pre>
+<h3>💡 Exemplo matemático</h3>
+<pre>
+x = 10
+y = 5
+print(x + y)  # 15
+</pre>
 
-<h3>⚠️ Erro comum</h3>
-<pre>"10" + 5</pre>
+<h3>💡 Exemplo comparação</h3>
+<pre>
+idade = 18
+print(idade >= 18)  # True
+</pre>
+
+<h3>⚠️ Erros comuns</h3>
+<pre>
+x = "10" + 5
+</pre>
+<p>Não pode somar texto com número.</p>
 
 <h3>🧠 Exercício</h3>
-<textarea id="e2"></textarea>
-<button onclick="corrigir('e2','r2')">Verificar</button>
-<p id="r2"></p>
+<p>Crie uma soma entre dois números</p>
+<textarea id="e4"></textarea>
+<button onclick="corrigir('e4','r4')">Verificar</button>
+<p id="r4"></p>
+
+<h3>📚 Resumo</h3>
+<p>Operadores permitem cálculos e decisões.</p>
 
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 3 GIGANTE ================= */
+/* ================= AULA 5 ================= */
 `<div class="card">
-<h2>⌨️ Entrada de Dados</h2>
+<h2>🔀 Condicionais (if)</h2>
 
 <h3>📖 Introdução</h3>
-<p>A entrada permite interação com o usuário.</p>
+<p>Condicionais permitem que o programa tome decisões.</p>
 
-<pre>nome = input("Digite seu nome: ")</pre>
+<h3>🧠 Estrutura</h3>
+<pre>
+if condição:
+    ação
+</pre>
 
-<h3>💡 Conversão</h3>
-<pre>idade = int(input("Idade: "))</pre>
+<h3>💡 Exemplo</h3>
+<pre>
+idade = 18
+
+if idade >= 18:
+    print("Maior de idade")
+</pre>
+
+<h3>💡 Com else</h3>
+<pre>
+if idade >= 18:
+    print("Adulto")
+else:
+    print("Menor")
+</pre>
+
+<h3>⚠️ Erros comuns</h3>
+<pre>
+if idade = 18
+</pre>
+<p>Erro: falta ==</p>
 
 <h3>🧠 Exercício</h3>
-<textarea id="e3"></textarea>
-<button onclick="corrigir('e3','r3')">Verificar</button>
-<p id="r3"></p>
+<p>Crie uma condição que verifica se um número é maior que 10</p>
+
+<textarea id="e5"></textarea>
+<button onclick="corrigir('e5','r5')">Verificar</button>
+<p id="r5"></p>
+
+<h3>📚 Resumo</h3>
+<p>Condicionais controlam decisões no programa.</p>
 
 <button id="btnConcluir"></button>
 </div>`,
 
-/* RESTANTE */
-`<div class="card"><h2>Operadores</h2><p>Operações matemáticas e lógicas.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Condicionais</h2><p>Decisões com if.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>For</h2><p>Loop controlado.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>While</h2><p>Loop condicional.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Listas</h2><p>Armazenam múltiplos valores.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Tuplas</h2><p>Imutáveis.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Dicionários</h2><p>Chave e valor.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Funções</h2><p>Reutilização de código.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Módulos</h2><p>Importação.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Erros</h2><p>Tratamento.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Classes</h2><p>POO.</p><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Arquivos</h2><p>Leitura e escrita.</p><button id="btnConcluir"></button></div>`
+/* ================= AULA 6 ================= */
+`<div class="card">
+<h2>🔁 Laço For</h2>
+
+<h3>📖 Introdução</h3>
+<p>O for é usado para repetir ações várias vezes.</p>
+
+<h3>🧠 Estrutura</h3>
+<pre>
+for i in range(5):
+    print(i)
+</pre>
+
+<h3>💡 Exemplo real</h3>
+<pre>
+for i in range(1,6):
+    print("Número:", i)
+</pre>
+
+<h3>💡 Percorrendo lista</h3>
+<pre>
+nomes = ["Ana", "João", "Carlos"]
+
+for nome in nomes:
+    print(nome)
+</pre>
+
+<h3>⚠️ Erros comuns</h3>
+<pre>
+for i in 5:
+</pre>
+<p>Erro: precisa de range()</p>
+
+<h3>🧠 Exercício</h3>
+<p>Crie um loop que imprime números de 1 a 3</p>
+
+<textarea id="e6"></textarea>
+<button onclick="corrigir('e6','r6')">Verificar</button>
+<p id="r6"></p>
+
+<h3>📚 Resumo</h3>
+<p>O for automatiza repetições.</p>
+
+<button id="btnConcluir"></button>
+</div>`
 
 ];
-
-renderSidebar();
-updateUI();
-</script>
-
-</body>
-</html>
 
 
 
