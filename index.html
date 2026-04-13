@@ -196,16 +196,61 @@ addXP(-3);
 /* ================= AULAS 1–5 ================= */
 const conteudos=[
 
+/* ================= AULA 1 ================= */
 `<div class="card">
-<h2>📦 Variáveis</h2>
-<p>Variáveis armazenam dados na memória e são essenciais para qualquer sistema.</p>
+<h2>📦 Variáveis — Fundamentos Completos</h2>
 
-<h3>Exemplo</h3>
+<p>Variáveis são estruturas que armazenam valores na memória. Elas permitem que você guarde informações e reutilize ao longo do programa.</p>
+
+<h3>🧠 Como funciona</h3>
+<p>Quando você escreve:</p>
+
 <pre>
 preco = 100
-desconto = 20
-total = preco - desconto
 </pre>
+
+<p>O Python cria um espaço na memória e associa o valor 100 ao nome "preco".</p>
+
+<h3>💡 Exemplos</h3>
+
+<pre>
+nome = "Carlos"
+idade = 20
+</pre>
+
+<pre>
+a = 10
+b = 5
+resultado = a + b
+</pre>
+
+<h3>🌍 Exemplo real</h3>
+
+<pre>
+produto = "Celular"
+preco = 1500
+quantidade = 2
+total = preco * quantidade
+</pre>
+
+<h3>⚠️ Erros comuns</h3>
+
+<pre>
+nome = Carlos
+</pre>
+<p>Erro: faltou aspas</p>
+
+<pre>
+1nome = "Ana"
+</pre>
+<p>Erro: não pode começar com número</p>
+
+<h3>🧠 Boas práticas</h3>
+<ul>
+<li>Use nomes claros</li>
+<li>Evite nomes genéricos</li>
+<li>Padronize seu código</li>
+</ul>
 
 <textarea id="a1"></textarea>
 <button onclick="corrigir('a1','r1')">Verificar</button>
@@ -214,13 +259,52 @@ total = preco - desconto
 <button id="btnConcluir"></button>
 </div>`,
 
+/* ================= AULA 2 ================= */
 `<div class="card">
-<h2>🔢 Tipos de Dados</h2>
-<p>Definem como os valores são interpretados.</p>
+<h2>🔢 Tipos de Dados — Explicação Completa</h2>
+
+<p>Tipos de dados determinam como os valores são tratados pelo Python.</p>
+
+<h3>📌 Tipos principais</h3>
+
+<ul>
+<li><b>int</b> → números inteiros</li>
+<li><b>float</b> → números decimais</li>
+<li><b>str</b> → textos</li>
+<li><b>bool</b> → verdadeiro ou falso</li>
+</ul>
+
+<h3>💡 Exemplos</h3>
+
+<pre>
+idade = 20
+preco = 19.90
+nome = "Ana"
+ativo = True
+</pre>
+
+<h3>🧠 Tipagem dinâmica</h3>
 
 <pre>
 x = 10
-nome = "Ana"
+x = "texto"
+</pre>
+
+<p>Python permite mudar o tipo da variável.</p>
+
+<h3>⚠️ Erros comuns</h3>
+
+<pre>
+"10" + 5
+</pre>
+<p>Erro: tipos diferentes</p>
+
+<h3>🔄 Conversão</h3>
+
+<pre>
+int("10")
+float("5.5")
+str(20)
 </pre>
 
 <textarea id="a2"></textarea>
@@ -230,13 +314,50 @@ nome = "Ana"
 <button id="btnConcluir"></button>
 </div>`,
 
+/* ================= AULA 3 ================= */
 `<div class="card">
-<h2>⌨️ Input</h2>
-<p>Permite entrada de dados.</p>
+<h2>⌨️ Input — Entrada de Dados</h2>
+
+<p>O input permite que o usuário envie dados para o programa.</p>
+
+<h3>🧠 Funcionamento</h3>
 
 <pre>
-nome = input("Digite:")
+nome = input("Digite seu nome: ")
 </pre>
+
+<p>Sempre retorna texto.</p>
+
+<h3>⚠️ Conversão</h3>
+
+<pre>
+idade = int(input("Idade: "))
+</pre>
+
+<h3>💡 Exemplos</h3>
+
+<pre>
+n1 = int(input("Número 1: "))
+n2 = int(input("Número 2: "))
+print(n1 + n2)
+</pre>
+
+<h3>🌍 Aplicação real</h3>
+
+<pre>
+nome = input("Nome: ")
+idade = int(input("Idade: ")
+print(nome, idade)
+</pre>
+
+<h3>⚠️ Erros comuns</h3>
+
+<pre>
+n = input()
+print(n + 10)
+</pre>
+
+<p>Erro: não converteu</p>
 
 <textarea id="a3"></textarea>
 <button onclick="corrigir('a3','r3')">Verificar</button>
@@ -245,12 +366,43 @@ nome = input("Digite:")
 <button id="btnConcluir"></button>
 </div>`,
 
+/* ================= AULA 4 ================= */
 `<div class="card">
-<h2>🧮 Operadores</h2>
+<h2>🧮 Operadores — Uso Completo</h2>
+
+<h3>📌 Tipos</h3>
+
+<ul>
+<li>Aritméticos: + - * /</li>
+<li>Comparação: > < == !=</li>
+<li>Lógicos: and, or</li>
+</ul>
+
+<h3>💡 Exemplos</h3>
+
 <pre>
-10 + 5
-10 > 5
+a = 10
+b = 5
+
+print(a + b)
+print(a > b)
 </pre>
+
+<h3>🌍 Exemplo real</h3>
+
+<pre>
+preco = 100
+if preco > 50:
+ print("Caro")
+</pre>
+
+<h3>⚠️ Erros</h3>
+
+<pre>
+if x = 10
+</pre>
+
+<p>Erro: usar ==</p>
 
 <textarea id="a4"></textarea>
 <button onclick="corrigir('a4','r4')">Verificar</button>
@@ -259,12 +411,56 @@ nome = input("Digite:")
 <button id="btnConcluir"></button>
 </div>`,
 
+/* ================= AULA 5 ================= */
 `<div class="card">
-<h2>🧠 Condicionais</h2>
+<h2>🧠 Condicionais — Controle de Fluxo</h2>
+
+<p>Permitem tomar decisões dentro do programa.</p>
+
+<h3>🧠 Estrutura</h3>
+
 <pre>
-if x > 5:
+if condição:
+ ação
+</pre>
+
+<h3>💡 Exemplos</h3>
+
+<pre>
+idade = 18
+
+if idade >= 18:
+ print("Maior")
+</pre>
+
+<h3>🔄 if / else</h3>
+
+<pre>
+if idade >= 18:
+ print("Maior")
+else:
+ print("Menor")
+</pre>
+
+<h3>🌍 Aplicação real</h3>
+
+<pre>
+senha = input("Senha:")
+
+if senha == "123":
+ print("Acesso liberado")
+else:
+ print("Acesso negado")
+</pre>
+
+<h3>⚠️ Erros</h3>
+
+<pre>
+if idade > 18
  print("ok")
 </pre>
+
+<p>Erro: falta :</p>
 
 <textarea id="a5"></textarea>
 <button onclick="corrigir('a5','r5')">Verificar</button>
@@ -272,7 +468,6 @@ if x > 5:
 
 <button id="btnConcluir"></button>
 </div>`
-
 ];
 
 renderSidebar();
