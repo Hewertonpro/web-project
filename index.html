@@ -2,83 +2,105 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>DevStudy Pro</title>
+<title>DevStudy Pro MAX</title>
 
 <style>
-body {margin:0;font-family:Arial;background:#0f172a;color:white;}
-header {text-align:center;padding:15px;background:#1e293b;}
-section {display:none;padding:20px;}
-section.active {display:block;}
+body {
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+#sidebar {
+width:260px;
+background:#020617;
+height:100vh;
+overflow:auto;
+padding:10px;
+}
+
+.aulaBtn {
+display:block;
+width:100%;
+margin-bottom:8px;
+padding:10px;
+background:#1e293b;
+border:none;
+color:white;
+text-align:left;
+}
+
+.locked {opacity:0.4}
+
+/* MAIN */
+#main {
+flex:1;
+padding:20px;
+overflow:auto;
+height:100vh;
+}
+
+header {
+background:#1e293b;
+padding:10px;
+margin-bottom:15px;
+}
 
 .card {
 background:#1e293b;
 padding:20px;
 border-radius:10px;
-margin-bottom:15px;
-line-height:1.6;
+margin-bottom:20px;
+line-height:1.7;
 }
-
-.locked {opacity:0.4;}
-
-button {
-padding:10px;
-margin-top:15px;
-border:none;
-border-radius:8px;
-background:#38bdf8;
-cursor:pointer;
-}
-
-progress {width:100%;}
-
-nav {
-position:fixed;
-bottom:0;
-width:100%;
-display:flex;
-background:#020617;
-}
-
-nav button {flex:1;background:none;color:white;}
 
 pre {
 background:#020617;
 padding:10px;
 border-radius:8px;
-overflow:auto;
 }
 
-h3 {margin-top:25px;}
+textarea {
+width:100%;
+height:100px;
+background:#020617;
+color:white;
+border:none;
+padding:10px;
+}
+
+button {
+margin-top:10px;
+padding:10px;
+background:#38bdf8;
+border:none;
+border-radius:8px;
+}
 </style>
 </head>
 
 <body>
 
+<div id="sidebar"></div>
+
+<div id="main">
 <header>
-<h2>📚 DevStudy Pro</h2>
+<h2>DevStudy Pro MAX</h2>
 <p>Nível <span id="level"></span> | XP <span id="xp"></span>/<span id="xpMax"></span></p>
 <progress id="bar"></progress>
 </header>
 
-<section id="aulas" class="active"></section>
-
-<section id="aulaView">
-<div class="card">
-<h2 id="tituloAula"></h2>
-<div id="conteudoAula"></div>
-<button id="btnConcluir"></button>
+<div id="conteudo"></div>
 </div>
-</section>
-
-<nav>
-<button onclick="show('aulas')">📚</button>
-</nav>
 
 <script>
-let xp = +localStorage.getItem("xp") || 0;
-let level = +localStorage.getItem("level") || 1;
-let xpMax = +localStorage.getItem("xpMax") || 120;
-let aulasFeitas = JSON.parse(localStorage.getItem("aulas")) || [];
+let xp = +localStorage.getItem("xp")||0;
+let level = +localStorage.getItem("level")||1;
+let xpMax = +localStorage.getItem("xpMax")||120;
+let aulasFeitas = JSON.parse(localStorage.getItem("aulas"))||[];
 
 function salvar(){
 localStorage.setItem("xp",xp);
@@ -87,106 +109,114 @@ localStorage.setItem("xpMax",xpMax);
 localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
 }
 
-function updateUI(){
-document.getElementById("xp").innerText = xp;
-document.getElementById("level").innerText = level;
-document.getElementById("xpMax").innerText = xpMax;
-bar.max = xpMax;
-bar.value = xp;
-}
-
 function addXP(v){
-xp += v;
-if(xp >= xpMax){
-xp = 0;
+xp+=v;
+if(xp>=xpMax){
+xp=0;
 level++;
-xpMax += 120;
-alert("🎉 Subiu de nível!");
+xpMax+=120;
+alert("Subiu de nível!");
 }
 salvar();
 updateUI();
 }
 
-const aulas = [
-"Variáveis","Tipos de dados","Entrada de dados","Operadores","Condicionais",
-"Laço for","Laço while","Listas","Tuplas","Dicionários",
+function updateUI(){
+xpEl.innerText=xp;
+levelEl.innerText=level;
+xpMaxEl.innerText=xpMax;
+bar.max=xpMax;
+bar.value=xp;
+}
+
+const aulas=[
+"Variáveis","Tipos","Input","Operadores","If",
+"For","While","Listas","Tuplas","Dicionários",
 "Funções","Módulos","Erros","Classes","Arquivos"
 ];
 
-function renderAulas(){
+function renderSidebar(){
 let html="";
 aulas.forEach((a,i)=>{
-let desbloqueada = i===0 || aulasFeitas.includes(i-1);
-
-html+=`
-<div class="card ${!desbloqueada?"locked":""}">
-<h3>${i+1}. ${a}</h3>
-<button ${!desbloqueada?"disabled":""} onclick="abrirAula(${i})">Entrar na aula</button>
-</div>`;
+let desbloqueada=i===0||aulasFeitas.includes(i-1);
+html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}"
+${!desbloqueada?"disabled":""}
+onclick="abrir(${i})">${i+1}. ${a}</button>`;
 });
-document.getElementById("aulas").innerHTML = html;
+sidebar.innerHTML=html;
 }
 
-function abrirAula(i){
-show("aulaView");
-tituloAula.innerText = aulas[i];
-conteudoAula.innerHTML = gerarConteudo(aulas[i]);
-
-btnConcluir.innerText = aulasFeitas.includes(i) ? "Já concluída" : "Concluir aula (+5 XP)";
-btnConcluir.disabled = aulasFeitas.includes(i);
-
-btnConcluir.onclick = ()=>{
-aulasFeitas.push(i);
-addXP(5);
-salvar();
-renderAulas();
-btnConcluir.innerText="✔ Concluída";
-btnConcluir.disabled=true;
-};
+function abrir(i){
+conteudo.innerHTML=gerarAula(aulas[i],i);
 }
 
-function gerarConteudo(titulo){
-
+function gerarAula(titulo,i){
 return `
-<h3>📖 Introdução</h3>
-<p>Esta aula aborda o conceito de <b>${titulo}</b> de forma completa e detalhada.</p>
+<div class="card">
+<h2>${titulo}</h2>
 
-<h3>🧠 Explicação</h3>
-<p>Em programação, ${titulo.toLowerCase()} é um conceito essencial. Entender isso permite criar sistemas mais complexos e eficientes.</p>
+<h3>Introdução completa</h3>
+<p>${titulo} é um dos pilares da programação. Sem entender isso, você não consegue avançar para conceitos mais complexos. Aqui vamos explorar profundamente desde o básico até aplicações reais.</p>
 
-<h3>💡 Exemplo 1</h3>
-<pre>x = 10
+<h3>Explicação detalhada</h3>
+<p>Quando usamos ${titulo.toLowerCase()}, estamos lidando diretamente com a lógica do sistema. Isso influencia desde pequenas aplicações até sistemas grandes.</p>
+
+<h3>Exemplo 1</h3>
+<pre>x=10
 print(x)</pre>
 
-<h3>💡 Exemplo 2</h3>
-<pre>nome = "João"
-print("Olá", nome)</pre>
+<h3>Exemplo 2</h3>
+<pre>nome="Ana"
+print(nome)</pre>
 
-<h3>🧠 Exercício</h3>
-<p>O que será exibido?</p>
-<pre>y = 5
-print(y + 5)</pre>
+<h3>Exemplo prático real</h3>
+<pre>idade=18
+if idade>=18:
+ print("Maior de idade")</pre>
 
-<h3>✅ Resolução</h3>
-<p>Resultado: 10. Isso ocorre porque somamos 5 + 5.</p>
+<h3>Erro comum</h3>
+<pre>x="10"+5</pre>
+<p>Isso gera erro porque mistura tipos.</p>
 
-<h3>📚 Resumo</h3>
-<p>Nesta aula você aprendeu sobre ${titulo.toLowerCase()} e como aplicar na prática.</p>
+<h3>Exercício</h3>
+<p>Digite o código para somar dois números:</p>
+<textarea id="code"></textarea>
+<button onclick="corrigir(${i})">Verificar</button>
+
+<p id="res"></p>
+
+<button onclick="concluir(${i})">Concluir aula (+5 XP)</button>
+</div>
 `;
 }
 
-function show(id){
-document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+function corrigir(i){
+let txt=document.getElementById("code").value;
+let r=document.getElementById("res");
+
+if(txt.includes("+")){
+r.innerHTML="✔ Parece correto!";
+addXP(10);
+}else{
+r.innerHTML="❌ Tente usar soma (+)";
+addXP(-3);
+}
 }
 
-renderAulas();
+function concluir(i){
+if(aulasFeitas.includes(i))return;
+aulasFeitas.push(i);
+addXP(5);
+salvar();
+renderSidebar();
+}
+
+renderSidebar();
 updateUI();
 </script>
 
 </body>
 </html>
-
 
 
 
