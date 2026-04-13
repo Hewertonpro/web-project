@@ -105,93 +105,26 @@ if(txt.includes("=")){
 r.innerHTML="✔ Boa resposta!";
 addXP(10);
 }else{
-r.innerHTML="❌ Errado.<br><b>Exemplo:</b><pre>preco = 50\ndesconto = 10\ntotal = preco - desconto</pre>";
+r.innerHTML="❌ Errado.<br><b>Exemplo:</b><pre>preco = 50\ndesconto = 10</pre>";
 addXP(-3);
 }
 }
 
 const conteudos=[
 
-/* ================= AULA 1 GIGANTE ================= */
+/* ================= AULA 1 ================= */
 `<div class="card">
 <h2>📦 Variáveis (Guia Completo Profissional)</h2>
-
-<h3>📖 Conceito Profundo</h3>
-<p>Variáveis são a base de toda programação. Elas permitem armazenar dados temporários na memória do computador durante a execução de um programa.</p>
-
-<p>Sem variáveis, não seria possível criar lógica, cálculos, sistemas ou qualquer tipo de automação.</p>
-
-<p>Pense em uma variável como um "container inteligente" que guarda valores que podem ser usados e modificados ao longo do tempo.</p>
-
-<h3>🧠 Memória e funcionamento interno</h3>
-<p>Quando você escreve:</p>
-
-<pre>nome = "Carlos"</pre>
-
-<p>O Python cria uma referência na memória RAM, associando o identificador "nome" ao valor "Carlos".</p>
-
-<p>Isso significa que o valor pode ser reutilizado, alterado e manipulado.</p>
-
-<h3>💡 Exemplos progressivos</h3>
+<p>Variáveis armazenam dados na memória e são fundamentais em qualquer sistema.</p>
 
 <pre>
-idade = 20
-print(idade)
+preco = 100
+desconto = 20
+total = preco - desconto
 </pre>
 
-<pre>
-a = 10
-b = 5
-soma = a + b
-print(soma)
-</pre>
-
-<pre>
-produto = "Celular"
-preco = 1500
-quantidade = 2
-total = preco * quantidade
-print(total)
-</pre>
-
-<h3>🌍 Aplicação real</h3>
-<p>Imagine um sistema de loja:</p>
-
-<pre>
-cliente = "João"
-saldo = 500
-compra = 200
-saldo_final = saldo - compra
-</pre>
-
-<p>Isso é exatamente como sistemas reais funcionam.</p>
-
-<h3>⚠️ Erros comuns detalhados</h3>
-
-<pre>nome = Carlos</pre>
-<p>Erro: falta aspas</p>
-
-<pre>x = "10" + 5</pre>
-<p>Erro: mistura de tipos</p>
-
-<pre>1nome = "Ana"</pre>
-<p>Erro: variável inválida</p>
-
-<h3>🧠 Boas práticas profissionais</h3>
-<ul>
-<li>Use nomes descritivos</li>
-<li>Evite abreviações confusas</li>
-<li>Mantenha padrão</li>
-</ul>
-
-<h3>🧠 Exercício nível real</h3>
-<p>Crie um sistema de compra:</p>
-<ul>
-<li>preco = 80</li>
-<li>desconto = 10</li>
-<li>total = preco - desconto</li>
-</ul>
-
+<h3>Exercício</h3>
+<p>Crie preco, desconto e total</p>
 <textarea id="a1"></textarea>
 <button onclick="corrigir('a1','r1')">Verificar</button>
 <p id="r1"></p>
@@ -199,59 +132,18 @@ saldo_final = saldo - compra
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 2 GIGANTE ================= */
+/* ================= AULA 2 ================= */
 `<div class="card">
-<h2>🔢 Tipos de Dados (Guia Completo)</h2>
-
-<h3>📖 Conceito</h3>
-<p>Tipos de dados definem como os valores são interpretados pelo sistema.</p>
-
-<p>Sem entender tipos, você não consegue manipular dados corretamente.</p>
-
-<h3>🧠 Tipos principais</h3>
-<ul>
-<li>int → números inteiros</li>
-<li>float → decimais</li>
-<li>str → texto</li>
-<li>bool → verdadeiro ou falso</li>
-</ul>
-
-<h3>💡 Exemplos completos</h3>
-
-<pre>
-idade = 25
-preco = 19.90
-nome = "Carlos"
-ativo = True
-</pre>
-
-<h3>🧠 Tipagem dinâmica</h3>
-<p>Python identifica automaticamente o tipo.</p>
+<h2>🔢 Tipos de Dados</h2>
+<p>Tipos definem como os dados são tratados.</p>
 
 <pre>
 x = 10
-x = "texto"
+nome = "Ana"
 </pre>
 
-<h3>⚠️ Erros comuns</h3>
-
-<pre>"10" + 5</pre>
-<p>Erro de tipo</p>
-
-<pre>idade = "18"</pre>
-<p>Agora virou string</p>
-
-<h3>🧠 Conversão</h3>
-
-<pre>
-int("10")
-float("5.5")
-str(20)
-</pre>
-
-<h3>🧠 Exercício</h3>
-<p>Crie um inteiro, um texto e um decimal</p>
-
+<h3>Exercício</h3>
+<p>Crie um inteiro e um texto</p>
 <textarea id="a2"></textarea>
 <button onclick="corrigir('a2','r2')">Verificar</button>
 <p id="r2"></p>
@@ -259,8 +151,41 @@ str(20)
 <button id="btnConcluir"></button>
 </div>`,
 
+/* ================= AULA 3 GIGANTE ================= */
+`<div class="card">
+<h2>⌨️ Entrada de Dados (input) — Guia Completo</h2>
+
+<p>O input permite interação com o usuário.</p>
+
+<pre>
+nome = input("Digite seu nome: ")
+</pre>
+
+<p>Sempre retorna texto.</p>
+
+<pre>
+idade = int(input("Idade: "))
+</pre>
+
+<h3>Exemplos</h3>
+
+<pre>
+n1 = int(input())
+n2 = int(input())
+print(n1 + n2)
+</pre>
+
+<h3>Exercício</h3>
+<p>Peça nome e idade e mostre na tela</p>
+
+<textarea id="a3"></textarea>
+<button onclick="corrigir('a3','r3')">Verificar</button>
+<p id="r3"></p>
+
+<button id="btnConcluir"></button>
+</div>`,
+
 /* RESTO */
-`<div class="card"><h2>Input</h2><button id="btnConcluir"></button></div>`,
 `<div class="card"><h2>Operadores</h2><button id="btnConcluir"></button></div>`,
 `<div class="card"><h2>Condicionais</h2><button id="btnConcluir"></button></div>`,
 `<div class="card"><h2>For</h2><button id="btnConcluir"></button></div>`
