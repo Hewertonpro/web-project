@@ -12,27 +12,21 @@ section.active {display:block;}
 
 .card {
 background:#1e293b;
-padding:15px;
+padding:20px;
 border-radius:10px;
 margin-bottom:15px;
+line-height:1.6;
 }
 
 .locked {opacity:0.4;}
 
 button {
 padding:10px;
-margin-top:10px;
+margin-top:15px;
 border:none;
 border-radius:8px;
 background:#38bdf8;
-}
-
-.option {
-display:block;
-width:100%;
-margin-top:10px;
-background:#334155;
-color:white;
+cursor:pointer;
 }
 
 progress {width:100%;}
@@ -46,6 +40,15 @@ background:#020617;
 }
 
 nav button {flex:1;background:none;color:white;}
+
+pre {
+background:#020617;
+padding:10px;
+border-radius:8px;
+overflow:auto;
+}
+
+h3 {margin-top:25px;}
 </style>
 </head>
 
@@ -67,84 +70,41 @@ nav button {flex:1;background:none;color:white;}
 </div>
 </section>
 
-<section id="quiz"></section>
-<section id="conquistas"></section>
-
 <nav>
 <button onclick="show('aulas')">📚</button>
-<button onclick="show('quiz')">🧠</button>
-<button onclick="show('conquistas')">🏆</button>
 </nav>
 
 <script>
 let xp = +localStorage.getItem("xp") || 0;
 let level = +localStorage.getItem("level") || 1;
 let xpMax = +localStorage.getItem("xpMax") || 120;
-let xpTotal = +localStorage.getItem("xpTotal") || 0;
-
 let aulasFeitas = JSON.parse(localStorage.getItem("aulas")) || [];
-let conquistas = JSON.parse(localStorage.getItem("conquistas")) || [];
-
-let respondeuQuiz = false;
 
 function salvar(){
 localStorage.setItem("xp",xp);
 localStorage.setItem("level",level);
 localStorage.setItem("xpMax",xpMax);
-localStorage.setItem("xpTotal",xpTotal);
 localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
-localStorage.setItem("conquistas",JSON.stringify(conquistas));
 }
 
 function updateUI(){
-xp = Math.max(0,xp);
 document.getElementById("xp").innerText = xp;
 document.getElementById("level").innerText = level;
 document.getElementById("xpMax").innerText = xpMax;
-let bar = document.getElementById("bar");
 bar.max = xpMax;
 bar.value = xp;
 }
 
 function addXP(v){
 xp += v;
-xpTotal += v;
-
 if(xp >= xpMax){
 xp = 0;
 level++;
 xpMax += 120;
 alert("🎉 Subiu de nível!");
 }
-
-checkConquistas();
 salvar();
 updateUI();
-}
-
-function checkConquistas(){
-if(aulasFeitas.length>=1 && !conquistas.includes("Primeira aula"))
-conquistas.push("Primeira aula");
-
-if(aulasFeitas.length>=5 && !conquistas.includes("5 aulas"))
-conquistas.push("5 aulas");
-
-if(aulasFeitas.length>=10 && !conquistas.includes("10 aulas"))
-conquistas.push("10 aulas");
-
-if(aulasFeitas.length>=15 && !conquistas.includes("Curso completo"))
-conquistas.push("Curso completo");
-
-if(xpTotal>=100 && !conquistas.includes("100 XP"))
-conquistas.push("100 XP");
-
-if(level>=3 && !conquistas.includes("Nível 3"))
-conquistas.push("Nível 3");
-
-document.getElementById("conquistas").innerHTML =
-"<div class='card'><h2>🏆 Conquistas</h2><ul>" +
-conquistas.map(c=>"<li>"+c+"</li>").join("") +
-"</ul></div>";
 }
 
 const aulas = [
@@ -153,37 +113,15 @@ const aulas = [
 "Funções","Módulos","Erros","Classes","Arquivos"
 ];
 
-const conteudosCompletos = [
-`<h3>Variáveis</h3><p>Guardam dados.</p><pre>nome="Ana"</pre><b>Questão:</b><pre>print(nome)</pre>`,
-`<h3>Tipos</h3><p>int, str, float</p><pre>x=10</pre>`,
-`<h3>Input</h3><p>Entrada de dados</p><pre>input()</pre>`,
-`<h3>Operadores</h3><p>+ - *</p>`,
-`<h3>If</h3><p>Decisão</p>`,
-`<h3>For</h3><p>Loop</p>`,
-`<h3>While</h3><p>Loop condicional</p>`,
-`<h3>Listas</h3><pre>[]</pre>`,
-`<h3>Tuplas</h3><pre>()</pre>`,
-`<h3>Dicionários</h3><pre>{}</pre>`,
-`<h3>Funções</h3><pre>def</pre>`,
-`<h3>Módulos</h3><p>Import</p>`,
-`<h3>Erros</h3><pre>try</pre>`,
-`<h3>Classes</h3><pre>class</pre>`,
-`<h3>Arquivos</h3><pre>open()</pre>`
-];
-
 function renderAulas(){
 let html="";
 aulas.forEach((a,i)=>{
 let desbloqueada = i===0 || aulasFeitas.includes(i-1);
-let feita = aulasFeitas.includes(i);
 
 html+=`
 <div class="card ${!desbloqueada?"locked":""}">
 <h3>${i+1}. ${a}</h3>
-<button ${!desbloqueada?"disabled":""}
-onclick="abrirAula(${i})">
-${feita?"Revisar":"Estudar"}
-</button>
+<button ${!desbloqueada?"disabled":""} onclick="abrirAula(${i})">Entrar na aula</button>
 </div>`;
 });
 document.getElementById("aulas").innerHTML = html;
@@ -191,94 +129,59 @@ document.getElementById("aulas").innerHTML = html;
 
 function abrirAula(i){
 show("aulaView");
-document.getElementById("tituloAula").innerText = aulas[i];
-document.getElementById("conteudoAula").innerHTML = conteudosCompletos[i];
+tituloAula.innerText = aulas[i];
+conteudoAula.innerHTML = gerarConteudo(aulas[i]);
 
-let btn = document.getElementById("btnConcluir");
+btnConcluir.innerText = aulasFeitas.includes(i) ? "Já concluída" : "Concluir aula (+5 XP)";
+btnConcluir.disabled = aulasFeitas.includes(i);
 
-if(aulasFeitas.includes(i)){
-btn.disabled=true;
-btn.innerText="Já concluída";
-}else{
-btn.disabled=false;
-btn.innerText="Concluir (+5 XP)";
-btn.onclick=()=>concluir(i);
-}
-}
-
-function concluir(i){
-if(aulasFeitas.includes(i)) return;
+btnConcluir.onclick = ()=>{
 aulasFeitas.push(i);
 addXP(5);
 salvar();
 renderAulas();
-document.getElementById("btnConcluir").innerText="✔ Concluída";
+btnConcluir.innerText="✔ Concluída";
+btnConcluir.disabled=true;
+};
 }
 
-const quizzes = [
-[
-{q:"Variável é?",opts:["Site","Memória","Celular"],c:1,exp:"Guarda dados",ex:"x=10"}
-],
-[
-{q:"Lista é?",opts:["Único","Vários","Erro"],c:1,exp:"Vários dados",ex:"[]"}
-],
-[
-{q:"Função serve?",opts:["Reutilizar","Nada","Erro"],c:0,exp:"Reuso",ex:"def f()"}
-]
-];
+function gerarConteudo(titulo){
 
-function renderQuiz(){
-let bloco = Math.floor(aulasFeitas.length/5);
+return `
+<h3>📖 Introdução</h3>
+<p>Esta aula aborda o conceito de <b>${titulo}</b> de forma completa e detalhada.</p>
 
-if(aulasFeitas.length<5){
-document.getElementById("quiz").innerHTML="<p>Complete 5 aulas</p>";
-return;
-}
+<h3>🧠 Explicação</h3>
+<p>Em programação, ${titulo.toLowerCase()} é um conceito essencial. Entender isso permite criar sistemas mais complexos e eficientes.</p>
 
-if(bloco>=3) bloco=2;
+<h3>💡 Exemplo 1</h3>
+<pre>x = 10
+print(x)</pre>
 
-let perguntas = quizzes[bloco];
-let html="<div class='card'><h2>Quiz</h2>";
+<h3>💡 Exemplo 2</h3>
+<pre>nome = "João"
+print("Olá", nome)</pre>
 
-perguntas.forEach(p=>{
-html+=`<p>${p.q}</p>`;
-p.opts.forEach((op,i)=>{
-html+=`<button class="option"
-onclick="responder(${i},${p.c},'${p.exp}','${p.ex}')">${op}</button>`;
-});
-});
+<h3>🧠 Exercício</h3>
+<p>O que será exibido?</p>
+<pre>y = 5
+print(y + 5)</pre>
 
-html+="<p id='res'></p></div>";
-document.getElementById("quiz").innerHTML=html;
-respondeuQuiz=false;
-}
+<h3>✅ Resolução</h3>
+<p>Resultado: 10. Isso ocorre porque somamos 5 + 5.</p>
 
-function responder(i,c,exp,ex){
-if(respondeuQuiz) return;
-respondeuQuiz=true;
-
-let r=document.getElementById("res");
-
-if(i===c){
-r.innerHTML="✔ Correto";
-addXP(15);
-}else{
-r.innerHTML=`❌ Errado<br>✔ ${exp}<br>💡 ${ex}`;
-addXP(-3);
-}
+<h3>📚 Resumo</h3>
+<p>Nesta aula você aprendeu sobre ${titulo.toLowerCase()} e como aplicar na prática.</p>
+`;
 }
 
 function show(id){
-document.querySelectorAll("section")
-.forEach(s=>s.classList.remove("active"));
+document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
 document.getElementById(id).classList.add("active");
-
-if(id==="quiz") renderQuiz();
 }
 
 renderAulas();
 updateUI();
-checkConquistas();
 </script>
 
 </body>
