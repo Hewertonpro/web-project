@@ -15,7 +15,6 @@ background:#1e293b;
 padding:15px;
 border-radius:10px;
 margin-bottom:15px;
-transition:0.3s;
 }
 
 .locked {opacity:0.4;}
@@ -28,7 +27,13 @@ border-radius:8px;
 background:#38bdf8;
 }
 
-.option {display:block;width:100%;margin-top:10px;background:#334155;color:white;}
+.option {
+display:block;
+width:100%;
+margin-top:10px;
+background:#334155;
+color:white;
+}
 
 progress {width:100%;}
 
@@ -53,6 +58,15 @@ nav button {flex:1;background:none;color:white;}
 </header>
 
 <section id="aulas" class="active"></section>
+
+<section id="aulaView">
+<div class="card">
+<h2 id="tituloAula"></h2>
+<div id="conteudoAula"></div>
+<button id="btnConcluir"></button>
+</div>
+</section>
+
 <section id="quiz"></section>
 <section id="conquistas"></section>
 
@@ -139,6 +153,24 @@ const aulas = [
 "Funções","Módulos","Erros","Classes","Arquivos"
 ];
 
+const conteudosCompletos = [
+`<h3>Variáveis</h3><p>Guardam dados.</p><pre>nome="Ana"</pre><b>Questão:</b><pre>print(nome)</pre>`,
+`<h3>Tipos</h3><p>int, str, float</p><pre>x=10</pre>`,
+`<h3>Input</h3><p>Entrada de dados</p><pre>input()</pre>`,
+`<h3>Operadores</h3><p>+ - *</p>`,
+`<h3>If</h3><p>Decisão</p>`,
+`<h3>For</h3><p>Loop</p>`,
+`<h3>While</h3><p>Loop condicional</p>`,
+`<h3>Listas</h3><pre>[]</pre>`,
+`<h3>Tuplas</h3><pre>()</pre>`,
+`<h3>Dicionários</h3><pre>{}</pre>`,
+`<h3>Funções</h3><pre>def</pre>`,
+`<h3>Módulos</h3><p>Import</p>`,
+`<h3>Erros</h3><pre>try</pre>`,
+`<h3>Classes</h3><pre>class</pre>`,
+`<h3>Arquivos</h3><pre>open()</pre>`
+];
+
 function renderAulas(){
 let html="";
 aulas.forEach((a,i)=>{
@@ -148,34 +180,30 @@ let feita = aulasFeitas.includes(i);
 html+=`
 <div class="card ${!desbloqueada?"locked":""}">
 <h3>${i+1}. ${a}</h3>
-<p>${getConteudo(i)}</p>
-<button ${!desbloqueada||feita?"disabled":""}
-onclick="concluir(${i})">Concluir (+5 XP)</button>
+<button ${!desbloqueada?"disabled":""}
+onclick="abrirAula(${i})">
+${feita?"Revisar":"Estudar"}
+</button>
 </div>`;
 });
-
 document.getElementById("aulas").innerHTML = html;
 }
 
-function getConteudo(i){
-const conteudos = [
-"Variável guarda dados. Ex: nome='Ana'",
-"Tipos: int, str, float",
-"input() pega dados do usuário",
-"+ - * / são operadores",
-"if decide ações",
-"for repete código",
-"while repete com condição",
-"lista guarda vários valores",
-"tupla é imutável",
-"dicionário usa chave:valor",
-"função evita repetição",
-"módulos são bibliotecas",
-"try/except trata erros",
-"class cria objetos",
-"open() manipula arquivos"
-];
-return conteudos[i];
+function abrirAula(i){
+show("aulaView");
+document.getElementById("tituloAula").innerText = aulas[i];
+document.getElementById("conteudoAula").innerHTML = conteudosCompletos[i];
+
+let btn = document.getElementById("btnConcluir");
+
+if(aulasFeitas.includes(i)){
+btn.disabled=true;
+btn.innerText="Já concluída";
+}else{
+btn.disabled=false;
+btn.innerText="Concluir (+5 XP)";
+btn.onclick=()=>concluir(i);
+}
 }
 
 function concluir(i){
@@ -184,23 +212,18 @@ aulasFeitas.push(i);
 addXP(5);
 salvar();
 renderAulas();
+document.getElementById("btnConcluir").innerText="✔ Concluída";
 }
 
 const quizzes = [
 [
-{q:"Variável é?",opts:["Site","Dado","Espaço de memória"],c:2,exp:"Guarda dados",ex:"x=10"},
-{q:"Tipo string?",opts:["Texto","Número","Erro"],c:0,exp:"Texto",ex:"nome='Ana'"},
-{q:"input faz?",opts:["Sai","Entra dados","Nada"],c:1,exp:"Entrada",ex:"input()"}
+{q:"Variável é?",opts:["Site","Memória","Celular"],c:1,exp:"Guarda dados",ex:"x=10"}
 ],
 [
-{q:"for faz?",opts:["Loop","Erro","Nada"],c:0,exp:"Repetição",ex:"for i in range(5)"},
-{q:"lista é?",opts:["Único","Vários","Erro"],c:1,exp:"Vários dados",ex:"[]"},
-{q:"tupla?",opts:["Mutável","Imutável","Loop"],c:1,exp:"Não muda",ex:"()"}
+{q:"Lista é?",opts:["Único","Vários","Erro"],c:1,exp:"Vários dados",ex:"[]"}
 ],
 [
-{q:"função?",opts:["Repete código","Erro","Nada"],c:0,exp:"Reutilizar",ex:"def f()"},
-{q:"classe?",opts:["Objeto","Número","Texto"],c:0,exp:"Cria objetos",ex:"class A"},
-{q:"arquivo?",opts:["Salvar dados","Nada","Erro"],c:0,exp:"Persistência",ex:"open()"}
+{q:"Função serve?",opts:["Reutilizar","Nada","Erro"],c:0,exp:"Reuso",ex:"def f()"}
 ]
 ];
 
@@ -215,10 +238,9 @@ return;
 if(bloco>=3) bloco=2;
 
 let perguntas = quizzes[bloco];
-
 let html="<div class='card'><h2>Quiz</h2>";
 
-perguntas.forEach((p,idx)=>{
+perguntas.forEach(p=>{
 html+=`<p>${p.q}</p>`;
 p.opts.forEach((op,i)=>{
 html+=`<button class="option"
@@ -227,7 +249,6 @@ onclick="responder(${i},${p.c},'${p.exp}','${p.ex}')">${op}</button>`;
 });
 
 html+="<p id='res'></p></div>";
-
 document.getElementById("quiz").innerHTML=html;
 respondeuQuiz=false;
 }
@@ -250,7 +271,6 @@ addXP(-3);
 function show(id){
 document.querySelectorAll("section")
 .forEach(s=>s.classList.remove("active"));
-
 document.getElementById(id).classList.add("active");
 
 if(id==="quiz") renderQuiz();
