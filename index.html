@@ -2,19 +2,20 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>DevStudy Pro MAX</title>
+<title>DevStudy Pro - Curso Profissional</title>
 
 <style>
 body {margin:0;font-family:Arial;background:#0f172a;color:white;display:flex;}
-#sidebar {width:260px;background:#020617;height:100vh;overflow:auto;padding:10px;}
+#sidebar {width:280px;background:#020617;height:100vh;overflow:auto;padding:10px;}
 .aulaBtn {display:block;width:100%;margin-bottom:8px;padding:10px;background:#1e293b;border:none;color:white;text-align:left;cursor:pointer;}
 .locked {opacity:0.4;}
 #main {flex:1;padding:20px;overflow:auto;height:100vh;}
 header {background:#1e293b;padding:10px;margin-bottom:15px;}
-.card {background:#1e293b;padding:20px;border-radius:10px;margin-bottom:20px;line-height:1.7;}
-pre {background:#020617;padding:10px;border-radius:8px;}
-textarea {width:100%;height:100px;background:#020617;color:white;border:none;padding:10px;}
-button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;cursor:pointer;}
+.card {background:#1e293b;padding:25px;border-radius:10px;margin-bottom:20px;line-height:1.8;}
+pre {background:#020617;padding:15px;border-radius:8px;}
+textarea {width:100%;height:120px;background:#020617;color:white;border:none;padding:10px;}
+button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
+h3 {margin-top:25px;}
 </style>
 </head>
 
@@ -24,7 +25,7 @@ button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radiu
 
 <div id="main">
 <header>
-<h2>DevStudy Pro MAX</h2>
+<h2>DevStudy Pro</h2>
 <p>Nível <span id="level"></span> | XP <span id="xp"></span>/<span id="xpMax"></span></p>
 <progress id="bar"></progress>
 </header>
@@ -46,136 +47,133 @@ localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
 }
 
 function updateUI(){
-document.getElementById("xp").innerText = xp;
-document.getElementById("level").innerText = level;
-document.getElementById("xpMax").innerText = xpMax;
-document.getElementById("bar").max = xpMax;
-document.getElementById("bar").value = xp;
+xpEl.innerText=xp;
+levelEl.innerText=level;
+xpMaxEl.innerText=xpMax;
+bar.max=xpMax;
+bar.value=xp;
 }
 
 function addXP(v){
-xp += v;
-if(xp >= xpMax){
-xp = 0;
+xp+=v;
+if(xp>=xpMax){
+xp=0;
 level++;
-xpMax += 120;
-alert("🎉 Subiu de nível!");
+xpMax+=120;
+alert("Subiu de nível!");
 }
-if(xp < 0) xp = 0;
+if(xp<0) xp=0;
 salvar();
 updateUI();
 }
 
-const aulas = [
-"Variáveis","Tipos de Dados","Entrada de Dados","Operadores","Condicionais",
-"For","While","Listas","Tuplas","Dicionários",
-"Funções","Módulos","Erros","Classes","Arquivos"
-];
+const aulas=["Variáveis","Tipos de Dados","Entrada de Dados"];
 
 function renderSidebar(){
 let html="";
 aulas.forEach((a,i)=>{
 let desbloqueada=i===0||aulasFeitas.includes(i-1);
-html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}"
-${!desbloqueada?"disabled":""}
-onclick="abrir(${i})">${i+1}. ${a}</button>`;
+html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}" ${!desbloqueada?"disabled":""} onclick="abrir(${i})">${i+1}. ${a}</button>`;
 });
-document.getElementById("sidebar").innerHTML=html;
+sidebar.innerHTML=html;
 }
 
 function abrir(i){
-document.getElementById("conteudo").innerHTML = conteudos[i];
-
-// botão concluir (sem bug)
-let btn = document.getElementById("btnConcluir");
+conteudo.innerHTML=conteudos[i];
+let btn=document.getElementById("btnConcluir");
 
 if(aulasFeitas.includes(i)){
-btn.disabled = true;
-btn.innerText = "✔ Aula concluída";
-} else {
-btn.disabled = false;
-btn.innerText = "Concluir aula (+5 XP)";
-btn.onclick = function(){
-concluir(i);
-btn.disabled = true;
-btn.innerText = "✔ Aula concluída";
-};
+btn.disabled=true;
+btn.innerText="✔ Aula concluída";
+}else{
+btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Aula concluída";}
 }
 }
 
 function concluir(i){
-if(aulasFeitas.includes(i)) return;
-
+if(aulasFeitas.includes(i))return;
 aulasFeitas.push(i);
 addXP(5);
 salvar();
 renderSidebar();
 }
 
-function corrigir(txtId,resId){
-let txt=document.getElementById(txtId).value;
-let r=document.getElementById(resId);
-
-if(txt.includes("+")){
-r.innerHTML="✔ Correto!";
-addXP(10);
-}else{
-r.innerHTML="❌ Tente usar operador +";
-addXP(-3);
-}
-}
-
-const conteudos = [
+const conteudos=[
 
 `<div class="card">
-<h2>📦 Variáveis</h2>
+<h2>📦 Variáveis (Aula Completa)</h2>
 
-<p>Variáveis são usadas para armazenar dados na memória. Elas são fundamentais em qualquer programa.</p>
+<h3>Introdução</h3>
+<p>Variáveis são um dos conceitos mais importantes da programação...</p>
+
+<h3>Explicação profunda</h3>
+<p>Quando você cria uma variável, o Python reserva um espaço na memória...</p>
 
 <h3>Exemplo básico</h3>
-<pre>nome = "Carlos"
+<pre>nome = "João"
 idade = 20</pre>
 
-<h3>Exemplo prático</h3>
-<pre>preco = 10
-total = preco + 5
+<h3>Exemplo prático real</h3>
+<pre>preco = 50
+desconto = 10
+total = preco - desconto
 print(total)</pre>
 
 <h3>Erro comum</h3>
-<pre>nome = Carlos</pre>
-<p>Isso gera erro porque falta aspas.</p>
+<pre>nome = João</pre>
 
 <h3>Exercício</h3>
-<textarea id="c1"></textarea>
-<button onclick="corrigir('c1','r1')">Verificar</button>
+<textarea id="ex1"></textarea>
+<button onclick="corrigir('ex1','r1')">Verificar</button>
 <p id="r1"></p>
 
-<button id="btnConcluir"></button>
+<button id="btnConcluir">Concluir aula</button>
 </div>`,
 
 `<div class="card">
 <h2>🔢 Tipos de Dados</h2>
 
-<p>Cada valor em Python possui um tipo.</p>
-
-<ul>
-<li>int → número inteiro</li>
-<li>str → texto</li>
-<li>float → decimal</li>
-</ul>
+<h3>Introdução</h3>
+<p>Todo valor possui um tipo...</p>
 
 <h3>Exemplo</h3>
 <pre>x = 10
 nome = "Ana"
 valor = 9.5</pre>
 
-<h3>Verificando tipo</h3>
-<pre>print(type(x))</pre>
+<h3>Exercício</h3>
+<textarea id="ex2"></textarea>
+<button onclick="corrigir('ex2','r2')">Verificar</button>
+<p id="r2"></p>
 
-<button id="btnConcluir"></button>
+<button id="btnConcluir">Concluir aula</button>
+</div>`,
+
+`<div class="card">
+<h2>⌨️ Entrada de Dados</h2>
+
+<h3>Introdução</h3>
+<p>Entrada permite interação com usuário...</p>
+
+<pre>nome = input("Digite seu nome: ")</pre>
+
+<button id="btnConcluir">Concluir aula</button>
 </div>`
 
 ];
+
+function corrigir(id,res){
+let txt=document.getElementById(id).value;
+let r=document.getElementById(res);
+
+if(txt.length>3){
+r.innerHTML="✔ Boa tentativa!";
+addXP(10);
+}else{
+r.innerHTML="❌ Tente melhorar a resposta";
+addXP(-3);
+}
+}
 
 renderSidebar();
 updateUI();
