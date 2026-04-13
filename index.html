@@ -14,7 +14,7 @@ header {background:#1e293b;padding:10px;margin-bottom:15px;}
 .card {background:#1e293b;padding:20px;border-radius:10px;margin-bottom:20px;line-height:1.7;}
 pre {background:#020617;padding:10px;border-radius:8px;}
 textarea {width:100%;height:100px;background:#020617;color:white;border:none;padding:10px;}
-button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;cursor:pointer;}
+button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
 h3 {margin-top:20px;}
 </style>
 </head>
@@ -50,8 +50,8 @@ function updateUI(){
 document.getElementById("xp").innerText = xp;
 document.getElementById("level").innerText = level;
 document.getElementById("xpMax").innerText = xpMax;
-document.getElementById("bar").max = xpMax;
-document.getElementById("bar").value = xp;
+bar.max = xpMax;
+bar.value = xp;
 }
 
 function addXP(v){
@@ -68,39 +68,35 @@ updateUI();
 }
 
 const aulas = [
-"Variáveis","Tipos de Dados","Entrada de Dados"
+"Variáveis","Tipos","Input","Operadores","Condicionais",
+"For","While","Listas","Tuplas","Dicionários",
+"Funções","Módulos","Erros","Classes","Arquivos"
 ];
 
 function renderSidebar(){
 let html="";
 aulas.forEach((a,i)=>{
 let desbloqueada=i===0||aulasFeitas.includes(i-1);
-html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}"
-${!desbloqueada?"disabled":""}
-onclick="abrir(${i})">${i+1}. ${a}</button>`;
+html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}" ${!desbloqueada?"disabled":""} onclick="abrir(${i})">${i+1}. ${a}</button>`;
 });
-document.getElementById("sidebar").innerHTML=html;
+sidebar.innerHTML=html;
 }
 
 function abrir(i){
-document.getElementById("conteudo").innerHTML = conteudos[i];
+conteudo.innerHTML=conteudos[i];
 
-let btn = document.getElementById("btnConcluir");
+let btn=document.getElementById("btnConcluir");
 
 if(aulasFeitas.includes(i)){
-btn.disabled = true;
-btn.innerText = "✔ Aula concluída";
+btn.disabled=true;
+btn.innerText="✔ Aula concluída";
 }else{
-btn.onclick = function(){
-concluir(i);
-btn.disabled = true;
-btn.innerText = "✔ Aula concluída";
-};
+btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Aula concluída";}
 }
 }
 
 function concluir(i){
-if(aulasFeitas.includes(i)) return;
+if(aulasFeitas.includes(i))return;
 aulasFeitas.push(i);
 addXP(5);
 salvar();
@@ -111,72 +107,123 @@ function corrigir(id,res){
 let txt=document.getElementById(id).value;
 let r=document.getElementById(res);
 
-if(txt.includes("=")){
-r.innerHTML="✔ Boa! Você entendeu variável.";
+if(txt.length>5){
+r.innerHTML="✔ Boa resposta!";
 addXP(10);
 }else{
-r.innerHTML="❌ Tente criar uma variável usando =";
+r.innerHTML="❌ Desenvolva mais a resposta";
 addXP(-3);
 }
 }
 
 const conteudos = [
 
+/* ================= AULA 1 GIGANTE ================= */
 `<div class="card">
-<h2>📦 Variáveis (Aula Completa)</h2>
+<h2>📦 Variáveis (Aula Completa Profissional)</h2>
 
 <h3>📖 Introdução</h3>
-<p>Variáveis são a base da programação. Sempre que você quiser guardar uma informação — como nome, idade, preço — você usa uma variável.</p>
+<p>Variáveis são estruturas fundamentais da programação. Elas permitem armazenar valores temporariamente na memória para serem utilizados durante a execução do programa.</p>
 
-<p>Sem variáveis, você não consegue construir praticamente nenhum sistema.</p>
+<h3>🧠 Conceito profundo</h3>
+<p>Quando você cria uma variável, o Python aloca um espaço na memória RAM e associa aquele nome ao valor armazenado.</p>
 
-<h3>🧠 Como funciona</h3>
-<p>Quando você cria uma variável, o Python guarda aquele valor na memória do computador.</p>
+<h3>💡 Exemplo básico</h3>
+<pre>nome = "João"
+print(nome)</pre>
 
-<pre>nome = "João"</pre>
-
-<p>Aqui você criou uma variável chamada <b>nome</b> e guardou o valor "João".</p>
-
-<h3>💡 Exemplo 1 (básico)</h3>
+<h3>💡 Exemplo matemático</h3>
 <pre>x = 10
-print(x)</pre>
+y = 5
+print(x + y)</pre>
 
-<h3>💡 Exemplo 2 (texto)</h3>
-<pre>mensagem = "Olá mundo"
-print(mensagem)</pre>
-
-<h3>💡 Exemplo 3 (uso real)</h3>
+<h3>💡 Exemplo real</h3>
 <pre>preco = 100
 desconto = 20
 total = preco - desconto
 print(total)</pre>
 
 <h3>⚠️ Erros comuns</h3>
-
-<p><b>Erro 1:</b></p>
 <pre>nome = João</pre>
-<p>Falta aspas → erro</p>
-
-<p><b>Erro 2:</b></p>
-<pre>x = "10" + 5</pre>
-<p>Não pode somar texto com número</p>
+<p>Erro: falta de aspas</p>
 
 <h3>🧠 Exercício</h3>
-<p>Crie uma variável chamada idade e coloque valor 20</p>
-
-<textarea id="ex1"></textarea>
-<button onclick="corrigir('ex1','r1')">Verificar</button>
+<p>Crie uma variável idade com valor 25</p>
+<textarea id="e1"></textarea>
+<button onclick="corrigir('e1','r1')">Verificar</button>
 <p id="r1"></p>
 
 <h3>📚 Resumo</h3>
-<p>Você aprendeu que variáveis guardam dados e são essenciais na programação.</p>
+<p>Variáveis são essenciais para armazenar e manipular dados.</p>
 
-<button id="btnConcluir">Concluir aula (+5 XP)</button>
+<button id="btnConcluir"></button>
 </div>`,
 
-`<div class="card"><h2>Tipos de Dados</h2><p>Aula simples por enquanto.</p><button id="btnConcluir">Concluir aula</button></div>`,
+/* ================= AULA 2 GIGANTE ================= */
+`<div class="card">
+<h2>🔢 Tipos de Dados</h2>
 
-`<div class="card"><h2>Entrada de Dados</h2><p>Aula simples por enquanto.</p><button id="btnConcluir">Concluir aula</button></div>`
+<h3>📖 Introdução</h3>
+<p>Todo valor em Python possui um tipo específico.</p>
+
+<h3>🧠 Tipos principais</h3>
+<ul>
+<li>int</li>
+<li>float</li>
+<li>str</li>
+<li>bool</li>
+</ul>
+
+<h3>💡 Exemplos</h3>
+<pre>x = 10
+nome = "Ana"
+preco = 9.99
+ativo = True</pre>
+
+<h3>⚠️ Erro comum</h3>
+<pre>"10" + 5</pre>
+
+<h3>🧠 Exercício</h3>
+<textarea id="e2"></textarea>
+<button onclick="corrigir('e2','r2')">Verificar</button>
+<p id="r2"></p>
+
+<button id="btnConcluir"></button>
+</div>`,
+
+/* ================= AULA 3 GIGANTE ================= */
+`<div class="card">
+<h2>⌨️ Entrada de Dados</h2>
+
+<h3>📖 Introdução</h3>
+<p>A entrada permite interação com o usuário.</p>
+
+<pre>nome = input("Digite seu nome: ")</pre>
+
+<h3>💡 Conversão</h3>
+<pre>idade = int(input("Idade: "))</pre>
+
+<h3>🧠 Exercício</h3>
+<textarea id="e3"></textarea>
+<button onclick="corrigir('e3','r3')">Verificar</button>
+<p id="r3"></p>
+
+<button id="btnConcluir"></button>
+</div>`,
+
+/* RESTANTE */
+`<div class="card"><h2>Operadores</h2><p>Operações matemáticas e lógicas.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Condicionais</h2><p>Decisões com if.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>For</h2><p>Loop controlado.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>While</h2><p>Loop condicional.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Listas</h2><p>Armazenam múltiplos valores.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Tuplas</h2><p>Imutáveis.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Dicionários</h2><p>Chave e valor.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Funções</h2><p>Reutilização de código.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Módulos</h2><p>Importação.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Erros</h2><p>Tratamento.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Classes</h2><p>POO.</p><button id="btnConcluir"></button></div>`,
+`<div class="card"><h2>Arquivos</h2><p>Leitura e escrita.</p><button id="btnConcluir"></button></div>`
 
 ];
 
@@ -186,7 +233,6 @@ updateUI();
 
 </body>
 </html>
-
 
 
 
