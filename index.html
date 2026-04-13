@@ -110,21 +110,81 @@ addXP(-3);
 }
 }
 
-const conteudos=[
+/* ================= CONTEÚDOS COMPLETOS ================= */
+const conteudos = [
 
 /* ================= AULA 1 ================= */
 `<div class="card">
-<h2>📦 Variáveis (Guia Completo Profissional)</h2>
-<p>Variáveis armazenam dados na memória e são fundamentais em qualquer sistema.</p>
+<h2>📦 Variáveis — Guia Profissional Completo</h2>
+
+<h3>📖 Introdução profunda</h3>
+<p>Variáveis são um dos pilares da programação. Elas permitem armazenar informações temporariamente na memória do computador, possibilitando manipulação de dados, cálculos, decisões e criação de sistemas reais.</p>
+
+<p>Sem variáveis, não existe lógica computacional. Todo programa utiliza variáveis para funcionar.</p>
+
+---
+
+<h3>🧠 Como funciona na memória</h3>
+<p>Quando você cria uma variável, o Python reserva um espaço na memória RAM e associa um nome a esse valor.</p>
 
 <pre>
-preco = 100
-desconto = 20
-total = preco - desconto
+nome = "Carlos"
 </pre>
 
-<h3>Exercício</h3>
-<p>Crie preco, desconto e total</p>
+<p>A variável "nome" agora aponta para o valor "Carlos".</p>
+
+---
+
+<h3>💡 Exemplos progressivos</h3>
+
+<pre>
+idade = 20
+print(idade)
+</pre>
+
+<pre>
+a = 10
+b = 5
+soma = a + b
+print(soma)
+</pre>
+
+<pre>
+produto = "Celular"
+preco = 1500
+quantidade = 2
+total = preco * quantidade
+print(total)
+</pre>
+
+---
+
+<h3>🌍 Aplicação real</h3>
+<pre>
+cliente = "João"
+saldo = 500
+compra = 200
+saldo_final = saldo - compra
+</pre>
+
+---
+
+<h3>⚠️ Erros comuns</h3>
+
+<pre>nome = Carlos</pre>
+<p>Erro: falta aspas</p>
+
+<pre>x = "10" + 5</pre>
+<p>Erro: mistura de tipos</p>
+
+<pre>1nome = "Ana"</pre>
+<p>Erro: variável inválida</p>
+
+---
+
+<h3>🧠 Exercício</h3>
+<p>Crie um sistema de compra com preco, desconto e total</p>
+
 <textarea id="a1"></textarea>
 <button onclick="corrigir('a1','r1')">Verificar</button>
 <p id="r1"></p>
@@ -134,16 +194,65 @@ total = preco - desconto
 
 /* ================= AULA 2 ================= */
 `<div class="card">
-<h2>🔢 Tipos de Dados</h2>
-<p>Tipos definem como os dados são tratados.</p>
+<h2>🔢 Tipos de Dados — Guia Completo</h2>
+
+<h3>📖 Conceito</h3>
+<p>Tipos de dados definem como os valores são interpretados e manipulados pelo programa.</p>
+
+---
+
+<h3>🧠 Tipos principais</h3>
+<ul>
+<li>int → inteiro</li>
+<li>float → decimal</li>
+<li>str → texto</li>
+<li>bool → verdadeiro/falso</li>
+</ul>
+
+---
+
+<h3>💡 Exemplos</h3>
 
 <pre>
-x = 10
-nome = "Ana"
+idade = 25
+preco = 19.90
+nome = "Carlos"
+ativo = True
 </pre>
 
-<h3>Exercício</h3>
-<p>Crie um inteiro e um texto</p>
+---
+
+<h3>🧠 Tipagem dinâmica</h3>
+<pre>
+x = 10
+x = "texto"
+</pre>
+
+---
+
+<h3>⚠️ Erros comuns</h3>
+
+<pre>"10" + 5</pre>
+<p>Erro de tipo</p>
+
+<pre>idade = "18"</pre>
+<p>Virou string</p>
+
+---
+
+<h3>🧠 Conversão</h3>
+
+<pre>
+int("10")
+float("5.5")
+str(20)
+</pre>
+
+---
+
+<h3>🧠 Exercício</h3>
+<p>Crie um inteiro, um texto e um decimal</p>
+
 <textarea id="a2"></textarea>
 <button onclick="corrigir('a2','r2')">Verificar</button>
 <p id="r2"></p>
@@ -151,11 +260,16 @@ nome = "Ana"
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 3 GIGANTE ================= */
+/* ================= AULA 3 ================= */
 `<div class="card">
-<h2>⌨️ Entrada de Dados (input) — Guia Completo</h2>
+<h2>⌨️ Input — Entrada de Dados Completa</h2>
 
-<p>O input permite interação com o usuário.</p>
+<h3>📖 Introdução</h3>
+<p>O input() permite que o usuário interaja com o programa, tornando os sistemas dinâmicos.</p>
+
+---
+
+<h3>🧠 Funcionamento</h3>
 
 <pre>
 nome = input("Digite seu nome: ")
@@ -163,19 +277,44 @@ nome = input("Digite seu nome: ")
 
 <p>Sempre retorna texto.</p>
 
+---
+
+<h3>🧠 Conversão</h3>
+
 <pre>
 idade = int(input("Idade: "))
 </pre>
 
-<h3>Exemplos</h3>
+---
+
+<h3>💡 Exemplos reais</h3>
 
 <pre>
-n1 = int(input())
-n2 = int(input())
+n1 = int(input("Número 1: "))
+n2 = int(input("Número 2: "))
 print(n1 + n2)
 </pre>
 
-<h3>Exercício</h3>
+<pre>
+preco = float(input("Preço: "))
+quantidade = int(input("Qtd: "))
+print(preco * quantidade)
+</pre>
+
+---
+
+<h3>⚠️ Erros comuns</h3>
+
+<pre>
+n = input()
+print(n + 10)
+</pre>
+
+<p>Erro: não converteu</p>
+
+---
+
+<h3>🧠 Exercício</h3>
 <p>Peça nome e idade e mostre na tela</p>
 
 <textarea id="a3"></textarea>
@@ -183,15 +322,10 @@ print(n1 + n2)
 <p id="r3"></p>
 
 <button id="btnConcluir"></button>
-</div>`,
-
-/* RESTO */
-`<div class="card"><h2>Operadores</h2><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>Condicionais</h2><button id="btnConcluir"></button></div>`,
-`<div class="card"><h2>For</h2><button id="btnConcluir"></button></div>`
+</div>`
 
 ];
-
+  
 renderSidebar();
 updateUI();
 
