@@ -1,154 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>DevStudy Pro</title>
+
+<style>
+
+/* BASE */
+body {
+margin:0;
+font-family: 'Segoe UI', Arial;
+background: #0b1220;
+color: #e2e8f0;
+display:flex;
+}
+
+/* SIDEBAR */
+#sidebar {
+width:260px;
+background:#020617;
+height:100vh;
+overflow:auto;
+padding:15px;
+border-right:1px solid #1e293b;
+}
+
+.aulaBtn {
+display:block;
+width:100%;
+margin-bottom:10px;
+padding:12px;
+background:#1e293b;
+border:none;
+color:#cbd5f5;
+text-align:left;
+cursor:pointer;
+border-radius:8px;
+transition:0.2s;
+}
+
+.aulaBtn:hover { background:#334155; }
+.locked { opacity:0.3; }
+
+/* MAIN */
+#main {
+flex:1;
+padding:25px;
+overflow:auto;
+height:100vh;
+}
+
+/* HEADER */
+header {
+background:#1e293b;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+/* CARD */
+.card {
+background:#1e293b;
+padding:25px;
+border-radius:12px;
+margin-bottom:20px;
+line-height:1.8;
+}
+
+/* TITULOS */
+h2 { color:#38bdf8; }
+h3 { color:#7dd3fc; margin-top:25px; }
+
+/* CÓDIGO */
+pre {
+background:#020617;
+padding:15px;
+border-radius:10px;
+color:#38bdf8;
+}
+
+/* INPUT */
+textarea {
+width:100%;
+height:120px;
+background:#020617;
+color:#e2e8f0;
+border:1px solid #334155;
+padding:12px;
+border-radius:8px;
+}
+
+/* BOTÃO */
+button {
+margin-top:12px;
+padding:12px;
+background:#38bdf8;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover { background:#0ea5e9; }
+
+progress { width:100%; height:10px; }
+
+</style>
+</head>
+
+<body>
+
+<div id="sidebar"></div>
+
+<div id="main">
+<header>
+<h2>DevStudy Pro</h2>
+<p>Nível <span id="level"></span> | XP <span id="xp"></span>/<span id="xpMax"></span></p>
+<progress id="bar"></progress>
+</header>
+
+<div id="conteudo"></div>
+</div>
+
+<script>
+
+let xp = +localStorage.getItem("xp")||0;
+let level = +localStorage.getItem("level")||1;
+let xpMax = +localStorage.getItem("xpMax")||120;
+let aulasFeitas = JSON.parse(localStorage.getItem("aulas"))||[];
+
+function salvar(){
+localStorage.setItem("xp",xp);
+localStorage.setItem("level",level);
+localStorage.setItem("xpMax",xpMax);
+localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
+}
+
+function updateUI(){
+xp.innerText = xp;
+document.getElementById("xp").innerText = xp;
+document.getElementById("level").innerText = level;
+document.getElementById("xpMax").innerText = xpMax;
+bar.max = xpMax;
+bar.value = xp;
+}
+
+function addXP(v){
+xp += v;
+if(xp >= xpMax){
+xp = 0;
+level++;
+xpMax += 120;
+alert("🎉 Subiu de nível!");
+}
+if(xp < 0) xp = 0;
+salvar();
+updateUI();
+}
+
+const aulas = [
+"Variáveis","Tipos","Input","Operadores","Condicionais","For"
+];
+
+function renderSidebar(){
+let html="";
+aulas.forEach((a,i)=>{
+let desbloqueada=i===0||aulasFeitas.includes(i-1);
+html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}" ${!desbloqueada?"disabled":""} onclick="abrir(${i})">${i+1}. ${a}</button>`;
+});
+sidebar.innerHTML=html;
+}
+
+function abrir(i){
+conteudo.innerHTML=conteudos[i];
+
+let btn=document.getElementById("btnConcluir");
+
+if(aulasFeitas.includes(i)){
+btn.disabled=true;
+btn.innerText="✔ Aula concluída";
+}else{
+btn.innerText="Concluir aula (+5 XP)";
+btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Aula concluída";}
+}
+}
+
+function concluir(i){
+if(aulasFeitas.includes(i))return;
+aulasFeitas.push(i);
+addXP(5);
+salvar();
+renderSidebar();
+}
+
+function corrigir(id,res){
+let txt=document.getElementById(id).value;
+let r=document.getElementById(res);
+
+if(txt.length>5){
+r.innerHTML="✔ Boa resposta!";
+addXP(10);
+}else{
+r.innerHTML="❌ Resposta muito simples";
+addXP(-3);
+}
+}
+
 const conteudos = [
 
-/* ================= AULA 1 ================= */
-conteudos[0],
-
-/* ================= AULA 2 ================= */
-conteudos[1],
-
-/* ================= AULA 3 ================= */
-conteudos[2],
-
-/* ================= AULA 4 ================= */
+/* AULA 1 */
 `<div class="card">
-<h2>➕ Operadores</h2>
-
-<h3>📖 Introdução</h3>
-<p>Operadores são usados para realizar cálculos e comparações dentro do programa.</p>
-
-<h3>🧠 Tipos de operadores</h3>
-<ul>
-<li>Aritméticos (+, -, *, /)</li>
-<li>Comparação (==, !=, >, <)</li>
-<li>Lógicos (and, or, not)</li>
-</ul>
-
-<h3>💡 Exemplo matemático</h3>
-<pre>
-x = 10
-y = 5
-print(x + y)  # 15
-</pre>
-
-<h3>💡 Exemplo comparação</h3>
-<pre>
-idade = 18
-print(idade >= 18)  # True
-</pre>
-
-<h3>⚠️ Erros comuns</h3>
-<pre>
-x = "10" + 5
-</pre>
-<p>Não pode somar texto com número.</p>
-
-<h3>🧠 Exercício</h3>
-<p>Crie uma soma entre dois números</p>
-<textarea id="e4"></textarea>
-<button onclick="corrigir('e4','r4')">Verificar</button>
-<p id="r4"></p>
-
-<h3>📚 Resumo</h3>
-<p>Operadores permitem cálculos e decisões.</p>
-
+<h2>Variáveis</h2>
+<p>Variáveis guardam dados na memória...</p>
+<pre>nome = "João"</pre>
+<textarea id="a1"></textarea>
+<button onclick="corrigir('a1','r1')">Verificar</button>
+<p id="r1"></p>
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 5 ================= */
+/* AULA 2 */
 `<div class="card">
-<h2>🔀 Condicionais (if)</h2>
-
-<h3>📖 Introdução</h3>
-<p>Condicionais permitem que o programa tome decisões.</p>
-
-<h3>🧠 Estrutura</h3>
-<pre>
-if condição:
-    ação
-</pre>
-
-<h3>💡 Exemplo</h3>
-<pre>
-idade = 18
-
-if idade >= 18:
-    print("Maior de idade")
-</pre>
-
-<h3>💡 Com else</h3>
-<pre>
-if idade >= 18:
-    print("Adulto")
-else:
-    print("Menor")
-</pre>
-
-<h3>⚠️ Erros comuns</h3>
-<pre>
-if idade = 18
-</pre>
-<p>Erro: falta ==</p>
-
-<h3>🧠 Exercício</h3>
-<p>Crie uma condição que verifica se um número é maior que 10</p>
-
-<textarea id="e5"></textarea>
-<button onclick="corrigir('e5','r5')">Verificar</button>
-<p id="r5"></p>
-
-<h3>📚 Resumo</h3>
-<p>Condicionais controlam decisões no programa.</p>
-
+<h2>Tipos de Dados</h2>
+<p>Tipos definem o formato...</p>
+<pre>type(10)</pre>
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 6 ================= */
+/* AULA 3 */
 `<div class="card">
-<h2>🔁 Laço For</h2>
+<h2>Input</h2>
+<p>Entrada de dados...</p>
+<pre>input()</pre>
+<button id="btnConcluir"></button>
+</div>`,
 
-<h3>📖 Introdução</h3>
-<p>O for é usado para repetir ações várias vezes.</p>
+/* AULA 4 */
+`<div class="card">
+<h2>Operadores</h2>
+<p>Permitem cálculos...</p>
+<pre>5 + 5</pre>
+<button id="btnConcluir"></button>
+</div>`,
 
-<h3>🧠 Estrutura</h3>
-<pre>
-for i in range(5):
-    print(i)
-</pre>
+/* AULA 5 */
+`<div class="card">
+<h2>Condicionais</h2>
+<p>Tomada de decisão...</p>
+<pre>if x > 5:</pre>
+<button id="btnConcluir"></button>
+</div>`,
 
-<h3>💡 Exemplo real</h3>
-<pre>
-for i in range(1,6):
-    print("Número:", i)
-</pre>
-
-<h3>💡 Percorrendo lista</h3>
-<pre>
-nomes = ["Ana", "João", "Carlos"]
-
-for nome in nomes:
-    print(nome)
-</pre>
-
-<h3>⚠️ Erros comuns</h3>
-<pre>
-for i in 5:
-</pre>
-<p>Erro: precisa de range()</p>
-
-<h3>🧠 Exercício</h3>
-<p>Crie um loop que imprime números de 1 a 3</p>
-
-<textarea id="e6"></textarea>
-<button onclick="corrigir('e6','r6')">Verificar</button>
-<p id="r6"></p>
-
-<h3>📚 Resumo</h3>
-<p>O for automatiza repetições.</p>
-
+/* AULA 6 */
+`<div class="card">
+<h2>For</h2>
+<p>Laço de repetição...</p>
+<pre>for i in range(5):</pre>
 <button id="btnConcluir"></button>
 </div>`
 
 ];
+
+renderSidebar();
+updateUI();
+
+</script>
+
+</body>
+</html>
 
 
 
