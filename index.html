@@ -5,90 +5,18 @@
 <title>DevStudy Pro</title>
 
 <style>
-body {
-margin:0;
-font-family: 'Segoe UI', Arial;
-background: #0b1220;
-color: #e2e8f0;
-display:flex;
-}
-
-#sidebar {
-width:260px;
-background:#020617;
-height:100vh;
-overflow:auto;
-padding:15px;
-border-right:1px solid #1e293b;
-}
-
-.aulaBtn {
-display:block;
-width:100%;
-margin-bottom:10px;
-padding:12px;
-background:#1e293b;
-border:none;
-color:#cbd5f5;
-text-align:left;
-cursor:pointer;
-border-radius:8px;
-}
-
+body {margin:0;font-family:'Segoe UI';background:#0b1220;color:#e2e8f0;display:flex;}
+#sidebar {width:260px;background:#020617;height:100vh;padding:15px;}
+.aulaBtn {width:100%;margin-bottom:10px;padding:12px;background:#1e293b;border:none;color:#cbd5f5;border-radius:8px;cursor:pointer;}
 .locked {opacity:0.3;}
-
-#main {
-flex:1;
-padding:25px;
-overflow:auto;
-height:100vh;
-}
-
-header {
-background:#1e293b;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-}
-
-.card {
-background:#1e293b;
-padding:25px;
-border-radius:12px;
-margin-bottom:20px;
-line-height:1.8;
-}
-
-h2 {color:#38bdf8;}
-h3 {color:#7dd3fc;}
-
-pre {
-background:#020617;
-padding:15px;
-border-radius:10px;
-color:#38bdf8;
-}
-
-textarea {
-width:100%;
-height:120px;
-background:#020617;
-color:#e2e8f0;
-border:1px solid #334155;
-padding:12px;
-border-radius:8px;
-}
-
-button {
-margin-top:12px;
-padding:12px;
-background:#38bdf8;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-progress {width:100%;}
+#main {flex:1;padding:25px;}
+header {background:#1e293b;padding:15px;border-radius:10px;margin-bottom:20px;}
+.card {background:#1e293b;padding:25px;border-radius:12px;line-height:1.8;}
+h2{color:#38bdf8;} h3{color:#7dd3fc;}
+pre{background:#020617;padding:15px;border-radius:10px;color:#38bdf8;}
+textarea{width:100%;height:120px;background:#020617;color:white;border:1px solid #334155;border-radius:8px;padding:10px;}
+button{margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
+progress{width:100%;}
 </style>
 </head>
 
@@ -107,11 +35,10 @@ progress {width:100%;}
 </div>
 
 <script>
-
-let xp = +localStorage.getItem("xp")||0;
-let level = +localStorage.getItem("level")||1;
-let xpMax = +localStorage.getItem("xpMax")||120;
-let aulasFeitas = JSON.parse(localStorage.getItem("aulas"))||[];
+let xp=+localStorage.getItem("xp")||0;
+let level=+localStorage.getItem("level")||1;
+let xpMax=+localStorage.getItem("xpMax")||120;
+let aulasFeitas=JSON.parse(localStorage.getItem("aulas"))||[];
 
 function salvar(){
 localStorage.setItem("xp",xp);
@@ -121,50 +48,43 @@ localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
 }
 
 function updateUI(){
-document.getElementById("xp").innerText = xp;
-document.getElementById("level").innerText = level;
-document.getElementById("xpMax").innerText = xpMax;
-bar.max = xpMax;
-bar.value = xp;
+xpEl.innerText=xp;
+levelEl.innerText=level;
+xpMaxEl.innerText=xpMax;
+bar.max=xpMax;
+bar.value=xp;
 }
 
 function addXP(v){
-xp += v;
-if(xp >= xpMax){
-xp = 0;
-level++;
-xpMax += 120;
-alert("🎉 Subiu de nível!");
+xp+=v;
+if(xp>=xpMax){
+xp=0;level++;xpMax+=120;
+alert("Subiu de nível!");
 }
-if(xp < 0) xp = 0;
-salvar();
-updateUI();
+if(xp<0)xp=0;
+salvar();updateUI();
 }
 
-const aulas = [
-"Variáveis","Tipos","Input","Operadores","Condicionais","For"
-];
+const aulas=["Variáveis","Tipos","Input","Operadores","Condicionais","For"];
 
 function renderSidebar(){
 let html="";
 aulas.forEach((a,i)=>{
-let desbloqueada=i===0||aulasFeitas.includes(i-1);
-html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}" ${!desbloqueada?"disabled":""} onclick="abrir(${i})">${i+1}. ${a}</button>`;
+let ok=i===0||aulasFeitas.includes(i-1);
+html+=`<button class="aulaBtn ${!ok?"locked":""}" ${!ok?"disabled":""} onclick="abrir(${i})">${i+1}. ${a}</button>`;
 });
 sidebar.innerHTML=html;
 }
 
 function abrir(i){
 conteudo.innerHTML=conteudos[i];
-
 let btn=document.getElementById("btnConcluir");
 
 if(aulasFeitas.includes(i)){
-btn.disabled=true;
-btn.innerText="✔ Aula concluída";
+btn.disabled=true;btn.innerText="✔ Concluída";
 }else{
 btn.innerText="Concluir aula (+5 XP)";
-btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Aula concluída";}
+btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Concluída";}
 }
 }
 
@@ -180,62 +100,116 @@ function corrigir(id,res){
 let txt=document.getElementById(id).value.toLowerCase();
 let r=document.getElementById(res);
 
-if(txt.includes("=")){
-r.innerHTML="✔ Correto!";
+if(txt.length>5){
+r.innerHTML="✔ Boa! Continue praticando.";
 addXP(10);
 }else{
-r.innerHTML="❌ Errado.<br><br><b>Resposta esperada:</b><br><pre>idade = 20</pre><br>Use = para criar variáveis.";
+r.innerHTML="❌ Resposta fraca.<br><b>Exemplo:</b><pre>idade = 20</pre>";
 addXP(-3);
 }
 }
 
-const conteudos = [
+const conteudos=[
 
+/* AULA 1 */
 `<div class="card">
 <h2>Variáveis</h2>
-<p>Variáveis guardam dados na memória...</p>
-<pre>nome = "João"</pre>
+<p>Variáveis armazenam dados na memória...</p>
+<pre>nome="João"</pre>
 
-<p><b>Exercício:</b> Crie uma variável chamada <code>idade</code> com valor 20</p>
-<textarea id="a1" placeholder="Digite aqui..."></textarea>
-<button onclick="corrigir('a1','r1')">Verificar resposta</button>
+<h3>Exemplo real</h3>
+<pre>preco=50
+desconto=10
+print(preco-desconto)</pre>
+
+<h3>Erro comum</h3>
+<pre>nome=João</pre>
+
+<p><b>Exercício:</b> Crie uma variável idade com valor 20</p>
+<textarea id="a1"></textarea>
+<button onclick="corrigir('a1','r1')">Verificar</button>
 <p id="r1"></p>
 
 <button id="btnConcluir"></button>
 </div>`,
 
+/* AULA 2 */
 `<div class="card">
-<h2>Tipos de Dados</h2>
-<p>Tipos definem o formato...</p>
-<pre>type(10)</pre>
+<h2>Tipos</h2>
+<p>Tipos definem como o dado é tratado.</p>
+
+<pre>x=10
+nome="Ana"
+preco=9.5</pre>
+
+<p><b>Exercício:</b> escreva um número e um texto</p>
+<textarea id="a2"></textarea>
+<button onclick="corrigir('a2','r2')">Verificar</button>
+<p id="r2"></p>
+
 <button id="btnConcluir"></button>
 </div>`,
 
+/* AULA 3 */
 `<div class="card">
 <h2>Input</h2>
-<p>Entrada de dados...</p>
-<pre>input()</pre>
+<p>Entrada de dados do usuário.</p>
+
+<pre>nome=input("Digite:")</pre>
+
+<p><b>Exercício:</b> use input</p>
+<textarea id="a3"></textarea>
+<button onclick="corrigir('a3','r3')">Verificar</button>
+<p id="r3"></p>
+
 <button id="btnConcluir"></button>
 </div>`,
 
+/* AULA 4 */
 `<div class="card">
 <h2>Operadores</h2>
-<p>Permitem cálculos...</p>
-<pre>5 + 5</pre>
+<p>Realizam cálculos.</p>
+
+<pre>5+5
+10-2</pre>
+
+<p><b>Exercício:</b> faça uma soma</p>
+<textarea id="a4"></textarea>
+<button onclick="corrigir('a4','r4')">Verificar</button>
+<p id="r4"></p>
+
 <button id="btnConcluir"></button>
 </div>`,
 
+/* AULA 5 */
 `<div class="card">
 <h2>Condicionais</h2>
-<p>Tomada de decisão...</p>
-<pre>if x > 5:</pre>
+<p>Tomam decisões.</p>
+
+<pre>if x>5:
+ print("ok")</pre>
+
+<p><b>Exercício:</b> use if</p>
+<textarea id="a5"></textarea>
+<button onclick="corrigir('a5','r5')">Verificar</button>
+<p id="r5"></p>
+
 <button id="btnConcluir"></button>
 </div>`,
 
+/* AULA 6 */
 `<div class="card">
 <h2>For</h2>
-<p>Laço de repetição...</p>
-<pre>for i in range(5):</pre>
+<p>Repete ações.</p>
+
+<pre>for i in range(5):
+ print(i)</pre>
+
+<p><b>Exercício:</b> faça um loop</p>
+<textarea id="a6"></textarea>
+<button onclick="corrigir('a6','r6')">Verificar</button>
+<p id="r6"></p>
+
 <button id="btnConcluir"></button>
 </div>`
 
@@ -243,7 +217,6 @@ const conteudos = [
 
 renderSidebar();
 updateUI();
-
 </script>
 
 </body>
