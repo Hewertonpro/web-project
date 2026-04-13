@@ -101,64 +101,127 @@ function corrigir(id,res){
 let txt=document.getElementById(id).value.toLowerCase();
 let r=document.getElementById(res);
 
-if(txt.includes("preco") && txt.includes("desconto")){
-r.innerHTML="✔ Excelente! Você entendeu variáveis e operação.";
+if(txt.includes("int") && txt.includes("str")){
+r.innerHTML="✔ Excelente! Você entendeu os tipos.";
 addXP(10);
 }else{
-r.innerHTML="❌ Resposta incorreta.<br><b>Exemplo:</b><pre>preco = 50\ndesconto = 10\ntotal = preco - desconto</pre>";
+r.innerHTML="❌ Resposta incompleta.<br><b>Exemplo:</b><pre>x = 10\nnome = \"Ana\"</pre>";
 addXP(-3);
 }
 }
 
 const conteudos=[
 
-/* ================= AULA 1 GIGANTE ================= */
+/* AULA 1 (mantida) */
 `<div class="card">
-<h2>📦 Variáveis (Aula Completa Nível Livro)</h2>
+<h2>Variáveis</h2>
+<p>Variáveis armazenam dados na memória...</p>
+<pre>nome="João"</pre>
+<button id="btnConcluir"></button>
+</div>`,
 
-<h3>📖 O que são variáveis?</h3>
-<p>Variáveis são estruturas fundamentais na programação. Elas permitem armazenar informações na memória do computador para uso posterior.</p>
+/* ================= AULA 2 GIGANTE ================= */
+`<div class="card">
+<h2>🔢 Tipos de Dados (Nível Livro)</h2>
 
-<p>Pense em uma variável como uma caixa com um nome. Dentro dessa caixa você pode guardar um valor.</p>
+<h3>📖 Introdução</h3>
+<p>Em programação, todo valor possui um tipo. O tipo define como aquele dado será tratado pelo sistema.</p>
 
-<pre>nome = "Carlos"</pre>
+<p>Sem entender tipos de dados, você não consegue construir programas confiáveis.</p>
 
-<h3>🧠 Como funciona na prática?</h3>
-<p>O Python cria um espaço na memória e associa o nome ao valor.</p>
+---
 
-<h3>💡 Exemplo básico</h3>
+<h3>🧠 Principais tipos em Python</h3>
+
+<ul>
+<li><b>int</b> → números inteiros</li>
+<li><b>float</b> → números decimais</li>
+<li><b>str</b> → textos</li>
+<li><b>bool</b> → verdadeiro ou falso</li>
+</ul>
+
+---
+
+<h3>💡 Exemplos práticos</h3>
+
 <pre>
-idade = 25
-print(idade)
+idade = 25          # int
+preco = 19.90       # float
+nome = "Carlos"     # str
+ativo = True        # bool
 </pre>
 
-<h3>💡 Exemplo real</h3>
+---
+
+<h3>🧠 Como o Python interpreta isso?</h3>
+
+<p>O Python identifica automaticamente o tipo do valor atribuído.</p>
+
 <pre>
-preco = 100
-desconto = 20
-total = preco - desconto
-print(total)
+x = 10
+print(type(x))
 </pre>
+
+---
+
+<h3>💡 Exemplo do mundo real</h3>
+
+<pre>
+nome = "João"
+idade = 18
+saldo = 250.75
+vip = True
+</pre>
+
+<p>Isso simula dados de um usuário.</p>
+
+---
 
 <h3>⚠️ Erros comuns</h3>
-<pre>nome = Carlos</pre>
-<pre>x = "10" + 5</pre>
+
+<p><b>Erro 1:</b></p>
+<pre>"10" + 5</pre>
+<p>Você não pode somar texto com número.</p>
+
+<p><b>Erro 2:</b></p>
+<pre>idade = "18"</pre>
+<p>Aqui idade virou texto, não número.</p>
+
+---
+
+<h3>🧠 Conversão de tipos</h3>
+
+<p>Você pode converter valores:</p>
+
+<pre>
+x = int("10")
+y = str(20)
+z = float("5.5")
+</pre>
+
+---
 
 <h3>🧠 Exercício</h3>
-<p>Crie um sistema com preco, desconto e total</p>
+<p>Crie:</p>
+<ul>
+<li>um número inteiro</li>
+<li>um texto</li>
+<li>um número decimal</li>
+</ul>
 
-<textarea id="a1"></textarea>
-<button onclick="corrigir('a1','r1')">Verificar</button>
-<p id="r1"></p>
+<textarea id="a2"></textarea>
+<button onclick="corrigir('a2','r2')">Verificar resposta</button>
+<p id="r2"></p>
+
+---
 
 <h3>📚 Resumo</h3>
-<p>Variáveis armazenam dados e são essenciais.</p>
+<p>Tipos de dados definem como os valores são tratados no programa.</p>
 
 <button id="btnConcluir"></button>
 </div>`,
 
-/* OUTRAS AULAS (mantidas) */
-`<div class="card"><h2>Tipos</h2><button id="btnConcluir"></button></div>`,
+/* OUTRAS */
 `<div class="card"><h2>Input</h2><button id="btnConcluir"></button></div>`,
 `<div class="card"><h2>Operadores</h2><button id="btnConcluir"></button></div>`,
 `<div class="card"><h2>Condicionais</h2><button id="btnConcluir"></button></div>`,
