@@ -113,26 +113,114 @@ const conteudos=[
 
 /* AULA 1 */
 `<div class="card">
-<h2>Variáveis</h2>
-<p>Variáveis armazenam dados na memória...</p>
-<pre>nome="João"</pre>
+<h2>📦 Variáveis (Aula Completa Nível Livro)</h2>
 
-<h3>Exemplo real</h3>
-<pre>preco=50
-desconto=10
-print(preco-desconto)</pre>
+<h3>📖 O que são variáveis?</h3>
+<p>Variáveis são estruturas fundamentais na programação. Elas permitem armazenar informações na memória do computador para uso posterior.</p>
 
-<h3>Erro comum</h3>
-<pre>nome=João</pre>
+<p>Pense em uma variável como uma caixa com um nome. Dentro dessa caixa você pode guardar um valor.</p>
 
-<p><b>Exercício:</b> Crie uma variável idade com valor 20</p>
-<textarea id="a1"></textarea>
-<button onclick="corrigir('a1','r1')">Verificar</button>
+<p>Exemplo:</p>
+<pre>nome = "Carlos"</pre>
+
+<p>Aqui você criou uma variável chamada <b>nome</b> e guardou o valor "Carlos".</p>
+
+---
+
+<h3>🧠 Como funciona na prática?</h3>
+<p>Quando o programa roda, o Python reserva um espaço na memória RAM e associa aquele nome ao valor.</p>
+
+<p>Ou seja:</p>
+<ul>
+<li>nome → referência</li>
+<li>"Carlos" → valor armazenado</li>
+</ul>
+
+---
+
+<h3>💡 Exemplo básico</h3>
+<pre>
+idade = 25
+print(idade)
+</pre>
+
+---
+
+<h3>💡 Exemplo matemático</h3>
+<pre>
+x = 10
+y = 5
+resultado = x + y
+print(resultado)
+</pre>
+
+---
+
+<h3>💡 Exemplo do mundo real</h3>
+<pre>
+preco = 100
+desconto = 20
+total = preco - desconto
+
+print("Total:", total)
+</pre>
+
+<p>Isso simula um sistema de loja.</p>
+
+---
+
+<h3>⚠️ Erros comuns</h3>
+
+<p><b>Erro 1:</b></p>
+<pre>nome = Carlos</pre>
+<p>Falta aspas → erro de sintaxe</p>
+
+<p><b>Erro 2:</b></p>
+<pre>x = "10" + 5</pre>
+<p>Não pode misturar texto com número</p>
+
+<p><b>Erro 3:</b></p>
+<pre>1nome = "Ana"</pre>
+<p>Variáveis não podem começar com número</p>
+
+---
+
+<h3>🧠 Boas práticas</h3>
+<ul>
+<li>Use nomes claros → idade, preco</li>
+<li>Evite nomes genéricos → x, y</li>
+<li>Use padrão consistente</li>
+</ul>
+
+---
+
+<h3>📚 Conceito avançado</h3>
+<p>Python é dinamicamente tipado, ou seja, você não precisa declarar o tipo da variável.</p>
+
+<pre>
+x = 10
+x = "texto"
+</pre>
+
+---
+
+<h3>🧠 Exercício</h3>
+<p><b>Crie um sistema simples de compra:</b></p>
+<p>1. Crie uma variável preco = 50</p>
+<p>2. Crie desconto = 10</p>
+<p>3. Crie total = preco - desconto</p>
+
+<textarea id="a1" placeholder="Digite seu código aqui..."></textarea>
+<button onclick="corrigir('a1','r1')">Verificar resposta</button>
 <p id="r1"></p>
 
-<button id="btnConcluir"></button>
-</div>`,
+---
 
+<h3>📚 Resumo</h3>
+<p>Variáveis são essenciais para armazenar e manipular dados. Sem elas, não existe programação prática.</p>
+
+<button id="btnConcluir"></button>
+</div>`
 /* AULA 2 */
 `<div class="card">
 <h2>Tipos</h2>
