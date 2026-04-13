@@ -5,80 +5,16 @@
 <title>DevStudy Pro MAX</title>
 
 <style>
-body {
-margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-}
-
-/* SIDEBAR */
-#sidebar {
-width:260px;
-background:#020617;
-height:100vh;
-overflow:auto;
-padding:10px;
-}
-
-.aulaBtn {
-display:block;
-width:100%;
-margin-bottom:8px;
-padding:10px;
-background:#1e293b;
-border:none;
-color:white;
-text-align:left;
-}
-
-.locked {opacity:0.4}
-
-/* MAIN */
-#main {
-flex:1;
-padding:20px;
-overflow:auto;
-height:100vh;
-}
-
-header {
-background:#1e293b;
-padding:10px;
-margin-bottom:15px;
-}
-
-.card {
-background:#1e293b;
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
-line-height:1.7;
-}
-
-pre {
-background:#020617;
-padding:10px;
-border-radius:8px;
-}
-
-textarea {
-width:100%;
-height:100px;
-background:#020617;
-color:white;
-border:none;
-padding:10px;
-}
-
-button {
-margin-top:10px;
-padding:10px;
-background:#38bdf8;
-border:none;
-border-radius:8px;
-}
+body {margin:0;font-family:Arial;background:#0f172a;color:white;display:flex;}
+#sidebar {width:260px;background:#020617;height:100vh;overflow:auto;padding:10px;}
+.aulaBtn {display:block;width:100%;margin-bottom:8px;padding:10px;background:#1e293b;border:none;color:white;text-align:left;}
+.locked {opacity:0.4;}
+#main {flex:1;padding:20px;overflow:auto;height:100vh;}
+header {background:#1e293b;padding:10px;margin-bottom:15px;}
+.card {background:#1e293b;padding:20px;border-radius:10px;margin-bottom:20px;line-height:1.7;}
+pre {background:#020617;padding:10px;border-radius:8px;}
+textarea {width:100%;height:100px;background:#020617;color:white;border:none;padding:10px;}
+button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
 </style>
 </head>
 
@@ -109,28 +45,29 @@ localStorage.setItem("xpMax",xpMax);
 localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
 }
 
-function addXP(v){
-xp+=v;
-if(xp>=xpMax){
-xp=0;
-level++;
-xpMax+=120;
-alert("Subiu de nível!");
+function updateUI(){
+document.getElementById("xp").innerText = xp;
+document.getElementById("level").innerText = level;
+document.getElementById("xpMax").innerText = xpMax;
+document.getElementById("bar").max = xpMax;
+document.getElementById("bar").value = xp;
 }
+
+function addXP(v){
+xp += v;
+if(xp >= xpMax){
+xp = 0;
+level++;
+xpMax += 120;
+alert("🎉 Subiu de nível!");
+}
+if(xp < 0) xp = 0;
 salvar();
 updateUI();
 }
 
-function updateUI(){
-xpEl.innerText=xp;
-levelEl.innerText=level;
-xpMaxEl.innerText=xpMax;
-bar.max=xpMax;
-bar.value=xp;
-}
-
-const aulas=[
-"Variáveis","Tipos","Input","Operadores","If",
+const aulas = [
+"Variáveis","Tipos de Dados","Entrada de Dados","Operadores","Condicionais",
 "For","While","Listas","Tuplas","Dicionários",
 "Funções","Módulos","Erros","Classes","Arquivos"
 ];
@@ -143,73 +80,86 @@ html+=`<button class="aulaBtn ${!desbloqueada?"locked":""}"
 ${!desbloqueada?"disabled":""}
 onclick="abrir(${i})">${i+1}. ${a}</button>`;
 });
-sidebar.innerHTML=html;
+document.getElementById("sidebar").innerHTML=html;
 }
 
 function abrir(i){
-conteudo.innerHTML=gerarAula(aulas[i],i);
-}
-
-function gerarAula(titulo,i){
-return `
-<div class="card">
-<h2>${titulo}</h2>
-
-<h3>Introdução completa</h3>
-<p>${titulo} é um dos pilares da programação. Sem entender isso, você não consegue avançar para conceitos mais complexos. Aqui vamos explorar profundamente desde o básico até aplicações reais.</p>
-
-<h3>Explicação detalhada</h3>
-<p>Quando usamos ${titulo.toLowerCase()}, estamos lidando diretamente com a lógica do sistema. Isso influencia desde pequenas aplicações até sistemas grandes.</p>
-
-<h3>Exemplo 1</h3>
-<pre>x=10
-print(x)</pre>
-
-<h3>Exemplo 2</h3>
-<pre>nome="Ana"
-print(nome)</pre>
-
-<h3>Exemplo prático real</h3>
-<pre>idade=18
-if idade>=18:
- print("Maior de idade")</pre>
-
-<h3>Erro comum</h3>
-<pre>x="10"+5</pre>
-<p>Isso gera erro porque mistura tipos.</p>
-
-<h3>Exercício</h3>
-<p>Digite o código para somar dois números:</p>
-<textarea id="code"></textarea>
-<button onclick="corrigir(${i})">Verificar</button>
-
-<p id="res"></p>
-
-<button onclick="concluir(${i})">Concluir aula (+5 XP)</button>
-</div>
-`;
-}
-
-function corrigir(i){
-let txt=document.getElementById("code").value;
-let r=document.getElementById("res");
-
-if(txt.includes("+")){
-r.innerHTML="✔ Parece correto!";
-addXP(10);
-}else{
-r.innerHTML="❌ Tente usar soma (+)";
-addXP(-3);
-}
+document.getElementById("conteudo").innerHTML=conteudos[i];
 }
 
 function concluir(i){
-if(aulasFeitas.includes(i))return;
+if(aulasFeitas.includes(i)) return;
 aulasFeitas.push(i);
 addXP(5);
 salvar();
 renderSidebar();
+alert("Aula concluída!");
 }
+
+function corrigir(txtId,resId){
+let txt=document.getElementById(txtId).value;
+let r=document.getElementById(resId);
+
+if(txt.includes("+")){
+r.innerHTML="✔ Correto!";
+addXP(10);
+}else{
+r.innerHTML="❌ Tente usar operador +";
+addXP(-3);
+}
+}
+
+const conteudos = [
+
+`<div class="card">
+<h2>Variáveis</h2>
+<p>Variáveis são usadas para armazenar informações na memória. Pense nelas como caixas onde você guarda valores.</p>
+
+<h3>Exemplo</h3>
+<pre>nome = "Carlos"
+idade = 25</pre>
+
+<h3>Explicação</h3>
+<p>O Python cria um espaço na memória para guardar esses dados.</p>
+
+<h3>Erro comum</h3>
+<pre>nome = Carlos</pre>
+<p>Isso dá erro porque texto precisa de aspas.</p>
+
+<h3>Exercício</h3>
+<textarea id="c1"></textarea>
+<button onclick="corrigir('c1','r1')">Verificar</button>
+<p id="r1"></p>
+
+<button onclick="concluir(0)">Concluir aula</button>
+</div>`,
+
+`<div class="card">
+<h2>Tipos de Dados</h2>
+<p>Cada valor tem um tipo específico.</p>
+
+<ul>
+<li>int → número inteiro</li>
+<li>str → texto</li>
+<li>float → decimal</li>
+</ul>
+
+<h3>Exemplo</h3>
+<pre>x = 10
+nome = "Ana"
+preco = 9.99</pre>
+
+<h3>Curiosidade</h3>
+<p>Você pode verificar o tipo com type()</p>
+
+<pre>print(type(x))</pre>
+
+<button onclick="concluir(1)">Concluir aula</button>
+</div>`,
+
+// 👉 aqui você pode continuar expandindo (já está estruturado pra crescer MUITO)
+
+];
 
 renderSidebar();
 updateUI();
@@ -217,7 +167,6 @@ updateUI();
 
 </body>
 </html>
-
 
 
 
