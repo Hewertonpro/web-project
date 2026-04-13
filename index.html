@@ -113,84 +113,190 @@ addXP(-3);
 /* ================= CONTEÚDOS COMPLETOS ================= */
 const conteudos = [
 
-/* ================= AULA 1 ================= */
+/* ================= AULA 1 PROFISSIONAL ================= */
 `<div class="card">
-<h2>📦 Variáveis — Guia Profissional Completo</h2>
+<h2>📦 Variáveis — Fundamentos Profissionais da Programação</h2>
 
-<h3>📖 Introdução profunda</h3>
-<p>Variáveis são um dos pilares da programação. Elas permitem armazenar informações temporariamente na memória do computador, possibilitando manipulação de dados, cálculos, decisões e criação de sistemas reais.</p>
+<h3>📖 Introdução Completa</h3>
+<p>Variáveis são a base de toda a programação moderna. Elas representam espaços na memória do computador onde informações podem ser armazenadas, manipuladas e reutilizadas durante a execução de um programa.</p>
 
-<p>Sem variáveis, não existe lógica computacional. Todo programa utiliza variáveis para funcionar.</p>
+<p>Sem variáveis, não seria possível construir sistemas, realizar cálculos, armazenar dados de usuários ou criar qualquer tipo de lógica dinâmica.</p>
+
+<p>Todo sistema que você usa hoje — redes sociais, jogos, aplicativos bancários — utiliza variáveis constantemente.</p>
 
 ---
 
-<h3>🧠 Como funciona na memória</h3>
-<p>Quando você cria uma variável, o Python reserva um espaço na memória RAM e associa um nome a esse valor.</p>
+<h3>🧠 Modelo Mental (Entendendo de Verdade)</h3>
+
+<p>Pense em uma variável como uma caixa com um rótulo:</p>
+
+<ul>
+<li>O nome da variável → é o rótulo</li>
+<li>O valor → é o conteúdo da caixa</li>
+</ul>
 
 <pre>
 nome = "Carlos"
 </pre>
 
-<p>A variável "nome" agora aponta para o valor "Carlos".</p>
+<p>Aqui você criou:</p>
+<ul>
+<li>Uma variável chamada <b>nome</b></li>
+<li>Que guarda o valor <b>"Carlos"</b></li>
+</ul>
+
+---
+
+<h3>🧠 Como funciona internamente</h3>
+
+<p>Quando você cria uma variável:</p>
+
+<pre>
+x = 10
+</pre>
+
+<p>O Python:</p>
+<ul>
+<li>Reserva espaço na memória RAM</li>
+<li>Armazena o valor 10</li>
+<li>Cria uma referência chamada "x"</li>
+</ul>
+
+<p>Isso permite acessar o valor sempre que necessário.</p>
 
 ---
 
 <h3>💡 Exemplos progressivos</h3>
 
+<h4>🔹 Exemplo 1 — básico</h4>
 <pre>
 idade = 20
 print(idade)
 </pre>
 
+<h4>🔹 Exemplo 2 — soma</h4>
 <pre>
 a = 10
 b = 5
-soma = a + b
-print(soma)
+resultado = a + b
+print(resultado)
 </pre>
 
+<h4>🔹 Exemplo 3 — sistema de compra</h4>
 <pre>
-produto = "Celular"
-preco = 1500
-quantidade = 2
-total = preco * quantidade
-print(total)
+preco = 100
+desconto = 20
+total = preco - desconto
+
+print("Total:", total)
 </pre>
 
 ---
 
-<h3>🌍 Aplicação real</h3>
+<h3>🌍 Aplicação real (nível sistema)</h3>
+
+<p>Simulando um sistema de usuário:</p>
+
 <pre>
-cliente = "João"
+nome = "João"
+idade = 18
 saldo = 500
-compra = 200
-saldo_final = saldo - compra
+
+print("Usuário:", nome)
+print("Saldo:", saldo)
 </pre>
 
----
-
-<h3>⚠️ Erros comuns</h3>
-
-<pre>nome = Carlos</pre>
-<p>Erro: falta aspas</p>
-
-<pre>x = "10" + 5</pre>
-<p>Erro: mistura de tipos</p>
-
-<pre>1nome = "Ana"</pre>
-<p>Erro: variável inválida</p>
+<p>Esse tipo de lógica é usada em:</p>
+<ul>
+<li>Sistemas bancários</li>
+<li>Jogos</li>
+<li>Aplicativos</li>
+</ul>
 
 ---
 
-<h3>🧠 Exercício</h3>
-<p>Crie um sistema de compra com preco, desconto e total</p>
+<h3>⚠️ Erros comuns (explicados profundamente)</h3>
 
-<textarea id="a1"></textarea>
-<button onclick="corrigir('a1','r1')">Verificar</button>
+<h4>❌ Erro 1 — esquecer aspas</h4>
+<pre>
+nome = Carlos
+</pre>
+<p>O Python tenta entender "Carlos" como variável → erro</p>
+
+---
+
+<h4>❌ Erro 2 — misturar tipos</h4>
+<pre>
+x = "10" + 5
+</pre>
+<p>Texto + número → erro de tipo</p>
+
+---
+
+<h4>❌ Erro 3 — nome inválido</h4>
+<pre>
+1nome = "Ana"
+</pre>
+<p>Variáveis não podem começar com número</p>
+
+---
+
+<h3>🧠 Boas práticas profissionais</h3>
+
+<ul>
+<li>Use nomes claros → preco, idade, saldo</li>
+<li>Evite nomes genéricos → x, y</li>
+<li>Use padrão consistente</li>
+</ul>
+
+---
+
+<h3>🧠 Conceito avançado</h3>
+
+<p>Python é dinamicamente tipado:</p>
+
+<pre>
+x = 10
+x = "texto"
+</pre>
+
+<p>A mesma variável pode mudar de tipo.</p>
+
+---
+
+<h3>🧠 Exercício prático (nível real)</h3>
+
+<p>Crie um sistema de compra com:</p>
+<ul>
+<li>produto</li>
+<li>preco</li>
+<li>quantidade</li>
+<li>total</li>
+</ul>
+
+<textarea id="a1" placeholder="Digite seu código aqui..."></textarea>
+<button onclick="corrigir('a1','r1')">Verificar resposta</button>
 <p id="r1"></p>
 
+---
+
+<h3>📚 Desafio bônus (nível profissional)</h3>
+<p>Simule um sistema de saldo bancário:</p>
+
+<ul>
+<li>saldo inicial</li>
+<li>valor de saque</li>
+<li>saldo final</li>
+</ul>
+
+---
+
+<h3>📌 Resumo final</h3>
+
+<p>Variáveis são essenciais para armazenar dados, criar lógica e desenvolver qualquer tipo de sistema. Dominar esse conceito é o primeiro passo para se tornar um programador profissional.</p>
+
 <button id="btnConcluir"></button>
-</div>`,
+</div>`
 
 /* ================= AULA 2 ================= */
 `<div class="card">
