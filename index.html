@@ -5,18 +5,91 @@
 <title>DevStudy Pro</title>
 
 <style>
-body {margin:0;font-family:'Segoe UI';background:#0b1220;color:#e2e8f0;display:flex;}
-#sidebar {width:260px;background:#020617;height:100vh;padding:15px;overflow:auto;}
-.aulaBtn {width:100%;margin-bottom:10px;padding:12px;background:#1e293b;border:none;color:#cbd5f5;border-radius:8px;cursor:pointer;}
-.locked {opacity:0.3;}
-#main {flex:1;padding:25px;overflow:auto;height:100vh;}
-header {background:#1e293b;padding:15px;border-radius:10px;margin-bottom:20px;}
-.card {background:#1e293b;padding:25px;border-radius:12px;line-height:1.8;}
-h2{color:#38bdf8;} h3{color:#7dd3fc;}
-pre{background:#020617;padding:15px;border-radius:10px;color:#38bdf8;overflow:auto;}
-textarea{width:100%;height:120px;background:#020617;color:white;border:1px solid #334155;border-radius:8px;padding:10px;}
-button{margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
-progress{width:100%;}
+body {
+margin:0;
+font-family:'Segoe UI';
+background:#0b1220;
+color:#e2e8f0;
+display:flex;
+}
+
+/* SIDEBAR */
+#sidebar {
+width:270px;
+background:#020617;
+height:100vh;
+overflow:auto;
+padding:15px;
+}
+
+.aulaBtn {
+width:100%;
+margin-bottom:10px;
+padding:12px;
+background:#1e293b;
+border:none;
+color:#cbd5f5;
+border-radius:8px;
+cursor:pointer;
+text-align:left;
+}
+
+.locked {
+opacity:0.3;
+}
+
+/* MAIN */
+#main {
+flex:1;
+padding:25px;
+overflow:auto;
+height:100vh;
+}
+
+header {
+background:#1e293b;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.card {
+background:#1e293b;
+padding:25px;
+border-radius:12px;
+line-height:1.9;
+}
+
+h2{color:#38bdf8;}
+h3{color:#7dd3fc;}
+
+pre {
+background:#020617;
+padding:15px;
+border-radius:10px;
+color:#38bdf8;
+overflow:auto;
+}
+
+textarea {
+width:100%;
+height:120px;
+background:#020617;
+color:white;
+border:1px solid #334155;
+border-radius:8px;
+padding:10px;
+}
+
+button {
+margin-top:10px;
+padding:10px;
+background:#38bdf8;
+border:none;
+border-radius:8px;
+}
+
+progress {width:100%;}
 </style>
 </head>
 
@@ -49,9 +122,9 @@ localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
 }
 
 function updateUI(){
-document.getElementById("xp").innerText=xp;
-document.getElementById("level").innerText=level;
-document.getElementById("xpMax").innerText=xpMax;
+xpEl.innerText=xp;
+levelEl.innerText=level;
+xpMaxEl.innerText=xpMax;
 bar.max=xpMax;
 bar.value=xp;
 }
@@ -59,14 +132,21 @@ bar.value=xp;
 function addXP(v){
 xp+=v;
 if(xp>=xpMax){
-xp=0;level++;xpMax+=120;
+xp=0;
+level++;
+xpMax+=120;
 alert("🎉 Subiu de nível!");
 }
 if(xp<0)xp=0;
-salvar();updateUI();
+salvar();
+updateUI();
 }
 
-const aulas=["Variáveis","Tipos","Input","Operadores","Condicionais","For"];
+const aulas=[
+"Variáveis","Tipos","Input","Operadores","Condicionais",
+"Loops","While","Listas","Tuplas","Dicionários",
+"Funções","Funções Avançadas","Strings","Erros","Projeto Final"
+];
 
 function renderSidebar(){
 let html="";
@@ -79,285 +159,69 @@ sidebar.innerHTML=html;
 
 function abrir(i){
 conteudo.innerHTML=conteudos[i];
+
 let btn=document.getElementById("btnConcluir");
 
+if(btn){
 if(aulasFeitas.includes(i)){
-btn.disabled=true;btn.innerText="✔ Concluída";
+btn.disabled=true;
+btn.innerText="✔ Concluída";
 }else{
 btn.innerText="Concluir aula (+5 XP)";
-btn.onclick=()=>{concluir(i);btn.disabled=true;btn.innerText="✔ Concluída";}
-}
-}
-
-function concluir(i){
-if(aulasFeitas.includes(i))return;
+btn.onclick=()=>{
 aulasFeitas.push(i);
 addXP(5);
 salvar();
 renderSidebar();
+btn.disabled=true;
+btn.innerText="✔ Concluída";
+}
+}
+}
 }
 
 function corrigir(id,res){
 let txt=document.getElementById(id).value.toLowerCase();
 let r=document.getElementById(res);
 
-if(txt.includes("=")){
+if(txt.length>5){
 r.innerHTML="✔ Boa resposta!";
 addXP(10);
 }else{
-r.innerHTML="❌ Errado.<br><b>Exemplo:</b><pre>preco = 50\ndesconto = 10</pre>";
+r.innerHTML="❌ Resposta fraca.<br><b>Exemplo:</b><pre>x = 10</pre>";
 addXP(-3);
 }
 }
 
-/* ================= CONTEÚDOS COMPLETOS ================= */
-const conteudos = [
+/* ================= AULAS 1–5 ================= */
+const conteudos=[
 
-/* ================= AULA 1 PROFISSIONAL ================= */
 `<div class="card">
-<h2>📦 Variáveis — Fundamentos Profissionais da Programação</h2>
+<h2>📦 Variáveis</h2>
+<p>Variáveis armazenam dados na memória e são essenciais para qualquer sistema.</p>
 
-<h3>📖 Introdução Completa</h3>
-<p>Variáveis são a base de toda a programação moderna. Elas representam espaços na memória do computador onde informações podem ser armazenadas, manipuladas e reutilizadas durante a execução de um programa.</p>
-
-<p>Sem variáveis, não seria possível construir sistemas, realizar cálculos, armazenar dados de usuários ou criar qualquer tipo de lógica dinâmica.</p>
-
-<p>Todo sistema que você usa hoje — redes sociais, jogos, aplicativos bancários — utiliza variáveis constantemente.</p>
-
----
-
-<h3>🧠 Modelo Mental (Entendendo de Verdade)</h3>
-
-<p>Pense em uma variável como uma caixa com um rótulo:</p>
-
-<ul>
-<li>O nome da variável → é o rótulo</li>
-<li>O valor → é o conteúdo da caixa</li>
-</ul>
-
-<pre>
-nome = "Carlos"
-</pre>
-
-<p>Aqui você criou:</p>
-<ul>
-<li>Uma variável chamada <b>nome</b></li>
-<li>Que guarda o valor <b>"Carlos"</b></li>
-</ul>
-
----
-
-<h3>🧠 Como funciona internamente</h3>
-
-<p>Quando você cria uma variável:</p>
-
-<pre>
-x = 10
-</pre>
-
-<p>O Python:</p>
-<ul>
-<li>Reserva espaço na memória RAM</li>
-<li>Armazena o valor 10</li>
-<li>Cria uma referência chamada "x"</li>
-</ul>
-
-<p>Isso permite acessar o valor sempre que necessário.</p>
-
----
-
-<h3>💡 Exemplos progressivos</h3>
-
-<h4>🔹 Exemplo 1 — básico</h4>
-<pre>
-idade = 20
-print(idade)
-</pre>
-
-<h4>🔹 Exemplo 2 — soma</h4>
-<pre>
-a = 10
-b = 5
-resultado = a + b
-print(resultado)
-</pre>
-
-<h4>🔹 Exemplo 3 — sistema de compra</h4>
+<h3>Exemplo</h3>
 <pre>
 preco = 100
 desconto = 20
 total = preco - desconto
-
-print("Total:", total)
 </pre>
 
----
-
-<h3>🌍 Aplicação real (nível sistema)</h3>
-
-<p>Simulando um sistema de usuário:</p>
-
-<pre>
-nome = "João"
-idade = 18
-saldo = 500
-
-print("Usuário:", nome)
-print("Saldo:", saldo)
-</pre>
-
-<p>Esse tipo de lógica é usada em:</p>
-<ul>
-<li>Sistemas bancários</li>
-<li>Jogos</li>
-<li>Aplicativos</li>
-</ul>
-
----
-
-<h3>⚠️ Erros comuns (explicados profundamente)</h3>
-
-<h4>❌ Erro 1 — esquecer aspas</h4>
-<pre>
-nome = Carlos
-</pre>
-<p>O Python tenta entender "Carlos" como variável → erro</p>
-
----
-
-<h4>❌ Erro 2 — misturar tipos</h4>
-<pre>
-x = "10" + 5
-</pre>
-<p>Texto + número → erro de tipo</p>
-
----
-
-<h4>❌ Erro 3 — nome inválido</h4>
-<pre>
-1nome = "Ana"
-</pre>
-<p>Variáveis não podem começar com número</p>
-
----
-
-<h3>🧠 Boas práticas profissionais</h3>
-
-<ul>
-<li>Use nomes claros → preco, idade, saldo</li>
-<li>Evite nomes genéricos → x, y</li>
-<li>Use padrão consistente</li>
-</ul>
-
----
-
-<h3>🧠 Conceito avançado</h3>
-
-<p>Python é dinamicamente tipado:</p>
-
-<pre>
-x = 10
-x = "texto"
-</pre>
-
-<p>A mesma variável pode mudar de tipo.</p>
-
----
-
-<h3>🧠 Exercício prático (nível real)</h3>
-
-<p>Crie um sistema de compra com:</p>
-<ul>
-<li>produto</li>
-<li>preco</li>
-<li>quantidade</li>
-<li>total</li>
-</ul>
-
-<textarea id="a1" placeholder="Digite seu código aqui..."></textarea>
-<button onclick="corrigir('a1','r1')">Verificar resposta</button>
+<textarea id="a1"></textarea>
+<button onclick="corrigir('a1','r1')">Verificar</button>
 <p id="r1"></p>
 
----
-
-<h3>📚 Desafio bônus (nível profissional)</h3>
-<p>Simule um sistema de saldo bancário:</p>
-
-<ul>
-<li>saldo inicial</li>
-<li>valor de saque</li>
-<li>saldo final</li>
-</ul>
-
----
-
-<h3>📌 Resumo final</h3>
-
-<p>Variáveis são essenciais para armazenar dados, criar lógica e desenvolver qualquer tipo de sistema. Dominar esse conceito é o primeiro passo para se tornar um programador profissional.</p>
-
 <button id="btnConcluir"></button>
-</div>`
+</div>`,
 
-/* ================= AULA 2 ================= */
 `<div class="card">
-<h2>🔢 Tipos de Dados — Guia Completo</h2>
+<h2>🔢 Tipos de Dados</h2>
+<p>Definem como os valores são interpretados.</p>
 
-<h3>📖 Conceito</h3>
-<p>Tipos de dados definem como os valores são interpretados e manipulados pelo programa.</p>
-
----
-
-<h3>🧠 Tipos principais</h3>
-<ul>
-<li>int → inteiro</li>
-<li>float → decimal</li>
-<li>str → texto</li>
-<li>bool → verdadeiro/falso</li>
-</ul>
-
----
-
-<h3>💡 Exemplos</h3>
-
-<pre>
-idade = 25
-preco = 19.90
-nome = "Carlos"
-ativo = True
-</pre>
-
----
-
-<h3>🧠 Tipagem dinâmica</h3>
 <pre>
 x = 10
-x = "texto"
+nome = "Ana"
 </pre>
-
----
-
-<h3>⚠️ Erros comuns</h3>
-
-<pre>"10" + 5</pre>
-<p>Erro de tipo</p>
-
-<pre>idade = "18"</pre>
-<p>Virou string</p>
-
----
-
-<h3>🧠 Conversão</h3>
-
-<pre>
-int("10")
-float("5.5")
-str(20)
-</pre>
-
----
-
-<h3>🧠 Exercício</h3>
-<p>Crie um inteiro, um texto e um decimal</p>
 
 <textarea id="a2"></textarea>
 <button onclick="corrigir('a2','r2')">Verificar</button>
@@ -366,72 +230,51 @@ str(20)
 <button id="btnConcluir"></button>
 </div>`,
 
-/* ================= AULA 3 ================= */
 `<div class="card">
-<h2>⌨️ Input — Entrada de Dados Completa</h2>
-
-<h3>📖 Introdução</h3>
-<p>O input() permite que o usuário interaja com o programa, tornando os sistemas dinâmicos.</p>
-
----
-
-<h3>🧠 Funcionamento</h3>
+<h2>⌨️ Input</h2>
+<p>Permite entrada de dados.</p>
 
 <pre>
-nome = input("Digite seu nome: ")
+nome = input("Digite:")
 </pre>
-
-<p>Sempre retorna texto.</p>
-
----
-
-<h3>🧠 Conversão</h3>
-
-<pre>
-idade = int(input("Idade: "))
-</pre>
-
----
-
-<h3>💡 Exemplos reais</h3>
-
-<pre>
-n1 = int(input("Número 1: "))
-n2 = int(input("Número 2: "))
-print(n1 + n2)
-</pre>
-
-<pre>
-preco = float(input("Preço: "))
-quantidade = int(input("Qtd: "))
-print(preco * quantidade)
-</pre>
-
----
-
-<h3>⚠️ Erros comuns</h3>
-
-<pre>
-n = input()
-print(n + 10)
-</pre>
-
-<p>Erro: não converteu</p>
-
----
-
-<h3>🧠 Exercício</h3>
-<p>Peça nome e idade e mostre na tela</p>
 
 <textarea id="a3"></textarea>
 <button onclick="corrigir('a3','r3')">Verificar</button>
 <p id="r3"></p>
 
 <button id="btnConcluir"></button>
+</div>`,
+
+`<div class="card">
+<h2>🧮 Operadores</h2>
+<pre>
+10 + 5
+10 > 5
+</pre>
+
+<textarea id="a4"></textarea>
+<button onclick="corrigir('a4','r4')">Verificar</button>
+<p id="r4"></p>
+
+<button id="btnConcluir"></button>
+</div>`,
+
+`<div class="card">
+<h2>🧠 Condicionais</h2>
+<pre>
+if x > 5:
+ print("ok")
+</pre>
+
+<textarea id="a5"></textarea>
+<button onclick="corrigir('a5','r5')">Verificar</button>
+<p id="r5"></p>
+
+<button id="btnConcluir"></button>
 </div>`
 
 ];
-  
+
 renderSidebar();
 updateUI();
 
