@@ -5,8 +5,6 @@
 <title>DevStudy Pro</title>
 
 <style>
-
-/* BASE */
 body {
 margin:0;
 font-family: 'Segoe UI', Arial;
@@ -15,7 +13,6 @@ color: #e2e8f0;
 display:flex;
 }
 
-/* SIDEBAR */
 #sidebar {
 width:260px;
 background:#020617;
@@ -36,13 +33,10 @@ color:#cbd5f5;
 text-align:left;
 cursor:pointer;
 border-radius:8px;
-transition:0.2s;
 }
 
-.aulaBtn:hover { background:#334155; }
-.locked { opacity:0.3; }
+.locked {opacity:0.3;}
 
-/* MAIN */
 #main {
 flex:1;
 padding:25px;
@@ -50,7 +44,6 @@ overflow:auto;
 height:100vh;
 }
 
-/* HEADER */
 header {
 background:#1e293b;
 padding:15px;
@@ -58,7 +51,6 @@ border-radius:10px;
 margin-bottom:20px;
 }
 
-/* CARD */
 .card {
 background:#1e293b;
 padding:25px;
@@ -67,11 +59,9 @@ margin-bottom:20px;
 line-height:1.8;
 }
 
-/* TITULOS */
-h2 { color:#38bdf8; }
-h3 { color:#7dd3fc; margin-top:25px; }
+h2 {color:#38bdf8;}
+h3 {color:#7dd3fc;}
 
-/* CÓDIGO */
 pre {
 background:#020617;
 padding:15px;
@@ -79,7 +69,6 @@ border-radius:10px;
 color:#38bdf8;
 }
 
-/* INPUT */
 textarea {
 width:100%;
 height:120px;
@@ -90,21 +79,16 @@ padding:12px;
 border-radius:8px;
 }
 
-/* BOTÃO */
 button {
 margin-top:12px;
 padding:12px;
 background:#38bdf8;
 border:none;
 border-radius:8px;
-font-weight:bold;
 cursor:pointer;
 }
 
-button:hover { background:#0ea5e9; }
-
-progress { width:100%; height:10px; }
-
+progress {width:100%;}
 </style>
 </head>
 
@@ -137,7 +121,6 @@ localStorage.setItem("aulas",JSON.stringify(aulasFeitas));
 }
 
 function updateUI(){
-xp.innerText = xp;
 document.getElementById("xp").innerText = xp;
 document.getElementById("level").innerText = level;
 document.getElementById("xpMax").innerText = xpMax;
@@ -194,32 +177,33 @@ renderSidebar();
 }
 
 function corrigir(id,res){
-let txt=document.getElementById(id).value;
+let txt=document.getElementById(id).value.toLowerCase();
 let r=document.getElementById(res);
 
-if(txt.length>5){
-r.innerHTML="✔ Boa resposta!";
+if(txt.includes("=")){
+r.innerHTML="✔ Correto!";
 addXP(10);
 }else{
-r.innerHTML="❌ Resposta muito simples";
+r.innerHTML="❌ Errado.<br><br><b>Resposta esperada:</b><br><pre>idade = 20</pre><br>Use = para criar variáveis.";
 addXP(-3);
 }
 }
 
 const conteudos = [
 
-/* AULA 1 */
 `<div class="card">
 <h2>Variáveis</h2>
 <p>Variáveis guardam dados na memória...</p>
 <pre>nome = "João"</pre>
-<textarea id="a1"></textarea>
-<button onclick="corrigir('a1','r1')">Verificar</button>
+
+<p><b>Exercício:</b> Crie uma variável chamada <code>idade</code> com valor 20</p>
+<textarea id="a1" placeholder="Digite aqui..."></textarea>
+<button onclick="corrigir('a1','r1')">Verificar resposta</button>
 <p id="r1"></p>
+
 <button id="btnConcluir"></button>
 </div>`,
 
-/* AULA 2 */
 `<div class="card">
 <h2>Tipos de Dados</h2>
 <p>Tipos definem o formato...</p>
@@ -227,7 +211,6 @@ const conteudos = [
 <button id="btnConcluir"></button>
 </div>`,
 
-/* AULA 3 */
 `<div class="card">
 <h2>Input</h2>
 <p>Entrada de dados...</p>
@@ -235,7 +218,6 @@ const conteudos = [
 <button id="btnConcluir"></button>
 </div>`,
 
-/* AULA 4 */
 `<div class="card">
 <h2>Operadores</h2>
 <p>Permitem cálculos...</p>
@@ -243,7 +225,6 @@ const conteudos = [
 <button id="btnConcluir"></button>
 </div>`,
 
-/* AULA 5 */
 `<div class="card">
 <h2>Condicionais</h2>
 <p>Tomada de decisão...</p>
@@ -251,7 +232,6 @@ const conteudos = [
 <button id="btnConcluir"></button>
 </div>`,
 
-/* AULA 6 */
 `<div class="card">
 <h2>For</h2>
 <p>Laço de repetição...</p>
