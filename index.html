@@ -7,14 +7,14 @@
 <style>
 body {margin:0;font-family:Arial;background:#0f172a;color:white;display:flex;}
 #sidebar {width:260px;background:#020617;height:100vh;overflow:auto;padding:10px;}
-.aulaBtn {display:block;width:100%;margin-bottom:8px;padding:10px;background:#1e293b;border:none;color:white;text-align:left;}
+.aulaBtn {display:block;width:100%;margin-bottom:8px;padding:10px;background:#1e293b;border:none;color:white;text-align:left;cursor:pointer;}
 .locked {opacity:0.4;}
 #main {flex:1;padding:20px;overflow:auto;height:100vh;}
 header {background:#1e293b;padding:10px;margin-bottom:15px;}
 .card {background:#1e293b;padding:20px;border-radius:10px;margin-bottom:20px;line-height:1.7;}
 pre {background:#020617;padding:10px;border-radius:8px;}
 textarea {width:100%;height:100px;background:#020617;color:white;border:none;padding:10px;}
-button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;}
+button {margin-top:10px;padding:10px;background:#38bdf8;border:none;border-radius:8px;cursor:pointer;}
 </style>
 </head>
 
@@ -84,16 +84,32 @@ document.getElementById("sidebar").innerHTML=html;
 }
 
 function abrir(i){
-document.getElementById("conteudo").innerHTML=conteudos[i];
+document.getElementById("conteudo").innerHTML = conteudos[i];
+
+// botão concluir (sem bug)
+let btn = document.getElementById("btnConcluir");
+
+if(aulasFeitas.includes(i)){
+btn.disabled = true;
+btn.innerText = "✔ Aula concluída";
+} else {
+btn.disabled = false;
+btn.innerText = "Concluir aula (+5 XP)";
+btn.onclick = function(){
+concluir(i);
+btn.disabled = true;
+btn.innerText = "✔ Aula concluída";
+};
+}
 }
 
 function concluir(i){
 if(aulasFeitas.includes(i)) return;
+
 aulasFeitas.push(i);
 addXP(5);
 salvar();
 renderSidebar();
-alert("Aula concluída!");
 }
 
 function corrigir(txtId,resId){
@@ -112,31 +128,35 @@ addXP(-3);
 const conteudos = [
 
 `<div class="card">
-<h2>Variáveis</h2>
-<p>Variáveis são usadas para armazenar informações na memória. Pense nelas como caixas onde você guarda valores.</p>
+<h2>📦 Variáveis</h2>
 
-<h3>Exemplo</h3>
+<p>Variáveis são usadas para armazenar dados na memória. Elas são fundamentais em qualquer programa.</p>
+
+<h3>Exemplo básico</h3>
 <pre>nome = "Carlos"
-idade = 25</pre>
+idade = 20</pre>
 
-<h3>Explicação</h3>
-<p>O Python cria um espaço na memória para guardar esses dados.</p>
+<h3>Exemplo prático</h3>
+<pre>preco = 10
+total = preco + 5
+print(total)</pre>
 
 <h3>Erro comum</h3>
 <pre>nome = Carlos</pre>
-<p>Isso dá erro porque texto precisa de aspas.</p>
+<p>Isso gera erro porque falta aspas.</p>
 
 <h3>Exercício</h3>
 <textarea id="c1"></textarea>
 <button onclick="corrigir('c1','r1')">Verificar</button>
 <p id="r1"></p>
 
-<button onclick="concluir(0)">Concluir aula</button>
+<button id="btnConcluir"></button>
 </div>`,
 
 `<div class="card">
-<h2>Tipos de Dados</h2>
-<p>Cada valor tem um tipo específico.</p>
+<h2>🔢 Tipos de Dados</h2>
+
+<p>Cada valor em Python possui um tipo.</p>
 
 <ul>
 <li>int → número inteiro</li>
@@ -147,17 +167,13 @@ idade = 25</pre>
 <h3>Exemplo</h3>
 <pre>x = 10
 nome = "Ana"
-preco = 9.99</pre>
+valor = 9.5</pre>
 
-<h3>Curiosidade</h3>
-<p>Você pode verificar o tipo com type()</p>
-
+<h3>Verificando tipo</h3>
 <pre>print(type(x))</pre>
 
-<button onclick="concluir(1)">Concluir aula</button>
-</div>`,
-
-// 👉 aqui você pode continuar expandindo (já está estruturado pra crescer MUITO)
+<button id="btnConcluir"></button>
+</div>`
 
 ];
 
